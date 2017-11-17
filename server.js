@@ -5,6 +5,7 @@ import morgan from 'morgan';
 const app = express();
 
 app.set('port', (process.env.API_PORT || 3001));
+app.disable('etag');
 
 if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
@@ -59,12 +60,12 @@ app.get('/api/check_token', (req, res) => {
 // to logins
 const FAKE_DELAY = 500; // ms
 app.get('/api/login', (req, res) => {
-  setTimeout(() => (
+  //setTimeout(() => (
     res.json({
       success: true,
       token: API_TOKEN,
-    })
-  ), FAKE_DELAY);
+    });
+  //), FAKE_DELAY);
 });
 
 export default app;

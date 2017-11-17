@@ -16,7 +16,7 @@ class Login extends Component {
   performLogin = () => {
     this.setState({ loginInProgress: true});
     client.login().then(
-      () => (this.setState({ shouldRedirect: true}))
+      () => {this.setState({ shouldRedirect: true}); console.log("Accepted")}
     );
   };
 
@@ -45,7 +45,9 @@ class Login extends Component {
           </form>
         </div>
       </div>
+
       )
+
     }
   }
 }

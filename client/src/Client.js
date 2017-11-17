@@ -9,7 +9,7 @@ class Client {
     this.subscriber = [];
 
     if (this.useLocalStorage) {
-      this.tokeni = localStorage.getItem(LOCAL_STORAGE_KEY);
+      this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
 
       if (this.token) {
         this.isTokenValid().then((bool) => {
@@ -20,7 +20,6 @@ class Client {
       }
     }
   }
-
   isLoggedIn() {
     return !!this.token
   }
@@ -62,10 +61,11 @@ class Client {
   }
 
   checkStatus(response) {
+    return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
     if (response.status >= 200 && response.status < 300) {
       return response
     } else {
-      const error = new Error(`HTTP Error ${response.statusText}`)
+      const error = new Error(`HTTP Error ${response.statusText}`);
       error.responcse = response;
       console.log(error);
       throw error
@@ -73,13 +73,15 @@ class Client {
   }
 
   parseJson(response) {
-    return response.json()
+    //return response.json()
+    return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
   }
 
 
   login() {
     return fetch('http://localhost:3001/api/login', {
       nethod: 'GET',
+      mode: 'no-cors',
       headers: {
         accept: 'application/json',
       },
