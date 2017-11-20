@@ -1,8 +1,13 @@
 import express from 'express';
+import Promise from 'bluebird';
 import morgan from 'morgan';
+import sqlite from 'sqlite';
 
 
 const app = express();
+const dbPromise = Promise.resolve()
+  .then(() => sqlite.open('./database.sqlite', { Promise }))
+  .then(db => db.migrate({ force: 'last'}));
 
 app.set('port', (process.env.API_PORT || 3001));
 app.disable('etag');
@@ -66,6 +71,22 @@ app.get('/api/login', (req, res) => {
       token: API_TOKEN,
     });
   //), FAKE_DELAY);
+});
+
+app.get('/post/:id', async (req, res, next) => {
+  try {
+    const db = await dbPromise;
+    const [post, categories] = await Promise.all([
+      db.get('SELECT * FROM Post WHERE id = ?', req.params.id),
+      db.all('SELECT * FROM Category')
+    ]);
+  } catch (err) {
+    next(err);
+  }
+  res.json({
+    success: true,
+    post: "Hi",
+  });
 });
 
 export default app;

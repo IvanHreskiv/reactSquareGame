@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Login.css';
+import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { client } from './Client'
 
@@ -41,7 +42,13 @@ class Login extends Component {
                 </div>
               )
             }
-            <p className="message">Not registered? <a href="#">Create an account</a></p>
+            <p className="message">Not registered?
+              <Link
+                to='/singup'
+                activateStyle={{ textDecoration: 'none', color: 'black' }}>
+                <span>Create an account</span>
+              </Link>
+            </p>
           </form>
         </div>
       </div>

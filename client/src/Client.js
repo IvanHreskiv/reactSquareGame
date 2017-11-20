@@ -61,6 +61,7 @@ class Client {
   }
 
   checkStatus(response) {
+    //TODO: this is mock. Please fix it as soon as possible
     return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
     if (response.status >= 200 && response.status < 300) {
       return response
@@ -74,6 +75,7 @@ class Client {
 
   parseJson(response) {
     //return response.json()
+    //TODO: this is mock. Please fix it as soon as possible
     return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
   }
 
