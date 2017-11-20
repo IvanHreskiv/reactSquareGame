@@ -74,10 +74,10 @@ app.get('/api/login', (req, res) => {
 });
 
 app.get('/post/:id', async (req, res, next) => {
+  let categories = null;
   try {
     const db = await dbPromise;
-    const [post, categories] = await Promise.all([
-      db.get('SELECT * FROM Post WHERE id = ?', req.params.id),
+    categories = await Promise.all([
       db.all('SELECT * FROM Category')
     ]);
   } catch (err) {
@@ -85,8 +85,22 @@ app.get('/post/:id', async (req, res, next) => {
   }
   res.json({
     success: true,
-    post: "Hi",
+    post: categories 
   });
+});
+
+app.post('/post', async (req, res, next) => {
+  let categories = null;
+  try {
+    const db = await dbPromise;
+    categories = await Promise.all([
+      db.run('INSERT INTO Category(name) VALUES(?)', 'NewName')
+    ]);
+    res.json({ categories: categories });
+  } catch (err) {
+    next(err);
+    res.json({ err: err });
+  }
 });
 
 export default app;
