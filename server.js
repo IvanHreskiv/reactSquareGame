@@ -1,8 +1,7 @@
 import express from 'express';
 import Promise from 'bluebird';
 import morgan from 'morgan';
-import sqlite from 'sqlite';
-
+import sqlite from 'sqlite'; 
 
 const app = express();
 const dbPromise = Promise.resolve()
@@ -78,7 +77,7 @@ app.get('/post/:id', async (req, res, next) => {
   try {
     const db = await dbPromise;
     categories = await Promise.all([
-      db.all('SELECT * FROM Category')
+      db.all('SELECT * FROM Category WHERE id=(?)', req.params.id)
     ]);
   } catch (err) {
     next(err);
@@ -89,6 +88,7 @@ app.get('/post/:id', async (req, res, next) => {
   });
 });
 
+/*
 app.post('/post', async (req, res, next) => {
   let categories = null;
   try {
@@ -101,6 +101,13 @@ app.post('/post', async (req, res, next) => {
     next(err);
     res.json({ err: err });
   }
+});*/
+
+app.post('/post', async (req, res, next) => {
+    const db = await dbPromise;
+    db.run('INSERT INTO Category(name) VALUES(?)', 'NewName')
+      .then(categories => res.json({categories}))
+      .catch( err => res.json({ err }));
 });
 
 export default app;
