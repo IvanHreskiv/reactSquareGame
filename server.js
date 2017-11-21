@@ -1,13 +1,37 @@
 import express from 'express';
 import Promise from 'bluebird';
 import morgan from 'morgan';
-import sqlite from 'sqlite'; 
+import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
+const Users = require('./models/user');
+
+
+const Op = Sequelize.Op;
+const sequelize = new Sequelize('database', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
+  operatorsAliases: Op,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+
+  storage: 'database.sqlite'
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err); 
+  });
 
 const app = express();
-const dbPromise = Promise.resolve()
-  .then(() => sqlite.open('./database.sqlite', { Promise }))
-  .then(db => db.migrate({ force: 'last'}));
+
 
 app.set('port', (process.env.API_PORT || 3001));
 app.use(bodyParser.json());
@@ -17,6 +41,15 @@ if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
 }
 
+app.get('/api/users/:id', (req, res) => {
+  User.findById(req.params.id)
+    .then(user => {
+        res.json({
+          success: true,
+          user: user,
+        });
+    })
+});
 // A fake API token we validate against
 export const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
@@ -74,42 +107,5 @@ app.get('/api/login', (req, res) => {
   //), FAKE_DELAY);
 });
 
-app.get('/post/:id', async (req, res, next) => {
-  let categories = null;
-  try {
-    const db = await dbPromise;
-    categories = await Promise.all([
-      db.all('SELECT * FROM Category WHERE id=(?)', req.params.id)
-    ]);
-  } catch (err) {
-    next(err);
-  }
-  res.json({
-    success: true,
-    post: categories 
-  });
-});
-
-/*
-app.post('/post', async (req, res, next) => {
-  let categories = null;
-  try {
-    const db = await dbPromise;
-    categories = await Promise.all([
-      db.run('INSERT INTO Category(name) VALUES(?)', 'NewName')
-    ]);
-    res.json({ categories: categories });
-  } catch (err) {
-    next(err);
-    res.json({ err: err });
-  }
-});*/
-
-app.post('/post', async (req, res, next) => {
-    const db = await dbPromise;
-    db.run('INSERT INTO Category(name) VALUES(?)', req.body.name)
-      .then(categories => res.json())
-      .catch( err => res.json({ err }));
-});
 
 export default app;

@@ -1,0 +1,16 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage": "database.sqlite"
+  },
+  "test": {
+    "username": "username",
+    "password": "password",
+    "database": "database",
+    "host": "127.0.0.1",
+    "dialect": "sqlite"
+  },
+  "production": {
+    "dialect": "sqlite"
+  }
+}
