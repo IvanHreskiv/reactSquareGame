@@ -19,6 +19,7 @@
     "babel-preset-es2015": "6.22.0",
     "babel-preset-stage-0": "6.22.0",
     "camelcase-keys": "4.0.0",
+    "body-parser": "latest",
     "express": "4.13.3",
     "sqlite": "latest",
     "isomorphic-fetch": "2.2.1",

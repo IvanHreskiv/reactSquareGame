@@ -2,6 +2,7 @@ import express from 'express';
 import Promise from 'bluebird';
 import morgan from 'morgan';
 import sqlite from 'sqlite'; 
+import bodyParser from 'body-parser'
 
 const app = express();
 const dbPromise = Promise.resolve()
@@ -9,6 +10,7 @@ const dbPromise = Promise.resolve()
   .then(db => db.migrate({ force: 'last'}));
 
 app.set('port', (process.env.API_PORT || 3001));
+app.use(bodyParser.json());
 app.disable('etag');
 
 if (process.env.NODE_ENV !== 'TEST') {
@@ -105,8 +107,8 @@ app.post('/post', async (req, res, next) => {
 
 app.post('/post', async (req, res, next) => {
     const db = await dbPromise;
-    db.run('INSERT INTO Category(name) VALUES(?)', 'NewName')
-      .then(categories => res.json({categories}))
+    db.run('INSERT INTO Category(name) VALUES(?)', req.body.name)
+      .then(categories => res.json())
       .catch( err => res.json({ err }));
 });
 
