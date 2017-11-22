@@ -49,14 +49,15 @@ app.get('/api/users/:id', (req, res) => {
           success: true,
           user: user,
         });
-    })
+    }).catch(err => res.json({err}));
 });
 
 //var new_d1 = Object.keys(dict).map(function(key) {return dict[key];});
 // A fake API token we validate against
 app.post('/api/users', (req, res) => {
   User.create(req.body)
-  .then((user) => { res.json({success: true, user: user,}); })
+  .then((user) => { res.status(201).json({success: true, user: user,}); })
+  .catch(err => res.json({err}));
 });
 
 app.patch('/api/users/:id', (req, res) => {
@@ -67,12 +68,14 @@ app.patch('/api/users/:id', (req, res) => {
           success: true,
           user: user,
         });})
+    .catch(err => res.json({err}));
 });
 
 app.delete('/api/users/:id', (req, res) => {
   User.findById(req.params.id)
     .then(user => user.destroy())
-    .then(() => {res.status(204).json({});});
+    .then(() => {res.status(204).json({});})
+    .catch(err => res.status(404).json({err}));
 });
 
 export const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
