@@ -1,0 +1,6 @@
+curl 'http://localhost:3001/api/users/1' | jq .
+
+
+curl -d '{"firstName": "John1","lastName": "DOe1", "email": "demo@demo.com" }' -H 'content-type: application/json' -X POST 'http://localhost:3001/api/users' | jq .
+
+curl -d '{"firstName": "John1","lastName": "DOe1", "email": "demo@demo.com" }' -H 'content-type: application/json' -X PATCH 'http://localhost:3001/api/users/1' | jq .

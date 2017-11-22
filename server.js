@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import morgan from 'morgan';
 import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
-const Users = require('./models/user');
+var models = require('./models');
 
 
 const Op = Sequelize.Op;
@@ -41,6 +41,7 @@ if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
 }
 
+const User = models.User;
 app.get('/api/users/:id', (req, res) => {
   User.findById(req.params.id)
     .then(user => {
@@ -50,7 +51,30 @@ app.get('/api/users/:id', (req, res) => {
         });
     })
 });
+
+//var new_d1 = Object.keys(dict).map(function(key) {return dict[key];});
 // A fake API token we validate against
+app.post('/api/users', (req, res) => {
+  User.create(req.body)
+  .then((user) => { res.json({success: true, user: user,}); })
+});
+
+app.patch('/api/users/:id', (req, res) => {
+  User.findById(req.params.id)
+    .then(user => user.update(req.body))
+    .then(user => {
+        res.json({
+          success: true,
+          user: user,
+        });})
+});
+
+app.delete('/api/users/:id', (req, res) => {
+  User.findById(req.params.id)
+    .then(user => user.destroy())
+    .then(() => {res.status(204).json({});});
+});
+
 export const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 const extractToken = (req) => (
