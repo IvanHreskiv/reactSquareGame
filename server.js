@@ -35,7 +35,11 @@ const app = express();
 
 app.set('port', (process.env.API_PORT || 3001));
 app.use(bodyParser.json());
-app.disable('etag');
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
@@ -126,12 +130,12 @@ app.get('/api/check_token', (req, res) => {
 // to logins
 const FAKE_DELAY = 500; // ms
 app.get('/api/login', (req, res) => {
-  //setTimeout(() => (
+  setTimeout(() => (
     res.json({
       success: true,
       token: API_TOKEN,
-    });
-  //), FAKE_DELAY);
+    })
+  ), FAKE_DELAY);
 });
 
 

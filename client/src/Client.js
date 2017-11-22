@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 const LOCAL_STORAGE_KEY = 'sr-spotiafy-fake-auth';
+const SERVER_HOST = 'http://localhost:3001';
 
 
 class Client {
@@ -49,7 +50,7 @@ class Client {
   }
 
   isTokenValid() {
-    const url = '/api/check_token?token=' + this.token;
+    const url = SERVER_HOST + '/api/check_token?token=' + this.token;
     return fetch(url, {
       method: 'get',
       headers: {
@@ -61,8 +62,6 @@ class Client {
   }
 
   checkStatus(response) {
-    //TODO: this is mock. Please fix it as soon as possible
-    return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
     if (response.status >= 200 && response.status < 300) {
       return response
     } else {
@@ -74,16 +73,13 @@ class Client {
   }
 
   parseJson(response) {
-    //return response.json()
-    //TODO: this is mock. Please fix it as soon as possible
-    return {"success":true,"token":"D6W69PRgCoDKgHZGJmRUNA"};
+    return response.json()
   }
 
 
   login() {
-    return fetch('http://localhost:3001/api/login', {
-      nethod: 'GET',
-      mode: 'no-cors',
+    return fetch( SERVER_HOST + '/api/login', {
+      method: 'GET',
       headers: {
         accept: 'application/json',
       },
