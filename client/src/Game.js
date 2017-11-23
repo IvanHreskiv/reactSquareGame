@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { client } from './Client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class GameContainer extends Component {
@@ -19,6 +20,15 @@ class GameContainer extends Component {
     console.log("Start    ");
   }
 
+  onSaveClick = () => {
+    const data = {
+      user_id: 1,
+      score: this.state.score,
+    };
+    client.create_score(data);
+    console.log("Save");
+  }
+
   render() {
     return (
       <div className='container'>
@@ -29,7 +39,9 @@ class GameContainer extends Component {
           onScoreChanged={this.handleScoreChanged}
         />
         <button onClick={this.onStartClick} type="button" className="btn btn-success center-block">Start</button>
-        <button onClick={this.onStopClick} type="button" className="btn btn-danger center-block">Stop</button> </div>
+        <button onClick={this.onStopClick} type="button" className="btn btn-danger center-block">Stop</button>
+        <button onClick={this.onSaveClick} type="button" className="btn btn-primary center-block">Save</button>
+      </div>
     );
   }
 }
@@ -48,13 +60,13 @@ class ScoreComponent extends Component {
 class Game extends Component {
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown);
-    this.updateCanvas(); 
-  }
-  
-  constructor(props) {
-    super(props);
     this.gamePiece = new Square(30, 30, "red", 10, 120);
     this.gameObstacles = [];
+    this.updateCanvas(); 
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   start = () => {
@@ -87,6 +99,7 @@ class Game extends Component {
       case 13:
         this.start();
         break;
+      default:
     }
   };
 
@@ -124,16 +137,14 @@ class Game extends Component {
 
     this.gamePiece.newPos();
     this.gamePiece.update(this.context);
-    this.props.onScoreChanged(this.frameNo);
+    this.props.onScoreChanged(this.frameNo?this.frameNo:0);
   };
 
   render() {
     return (
       <div className='column'>
         <canvas ref="canvas" width={480} height={270}/>
-        <Link
-          to='/logout'
-          activateStyle={{ textDecoration: 'none', color: 'black' }}>
+        <Link to='/logout'>
           <span>logout</span>
         </Link>
       </div>
@@ -183,10 +194,6 @@ class CanvasComponent {
 
 
 class Square extends CanvasComponent {
-  constructor(width, height, color, x, y) {
-    super(width, height, color, x, y)
-  }
-
   moveRight = () => {
     if (this.speedX + 1 + this.width <= 480) {
       this.speedX += 1

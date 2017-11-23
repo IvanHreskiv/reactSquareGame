@@ -43,9 +43,7 @@ class Login extends Component {
               )
             }
             <p className="message">Not registered?
-              <Link
-                to='/singup'
-                activateStyle={{ textDecoration: 'none', color: 'black' }}>
+              <Link to='/singup'>
                 <span>Create an account</span>
               </Link>
             </p>

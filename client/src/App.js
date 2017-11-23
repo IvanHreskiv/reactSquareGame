@@ -13,9 +13,7 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path='/' render={props => (
-            <Link
-              to='/login'
-              activateStyle={{ textDecoration: 'none', color: 'black' }}>
+            <Link to='/login'>
               <span>login</span>
             </Link>
           )} />

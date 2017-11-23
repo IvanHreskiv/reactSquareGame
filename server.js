@@ -82,6 +82,43 @@ app.delete('/api/users/:id', (req, res) => {
     .catch(err => res.status(404).json({err}));
 });
 
+const Score = models.Score;
+app.get('/api/scores/:id', (req, res) => {
+  Score.findById(req.params.id)
+    .then(score => {
+        res.json({
+          success: true,
+          user: score,
+        });
+    }).catch(err => res.json({err}));
+});
+
+//var new_d1 = Object.keys(dict).map(function(key) {return dict[key];});
+// A fake API token we validate against
+app.post('/api/scores', (req, res) => {
+  Score.create(req.body)
+  .then((score) => { res.status(201).json({success: true, user: score,}); })
+  .catch(err => res.json({err}));
+});
+
+app.patch('/api/scores/:id', (req, res) => {
+  Score.findById(req.params.id)
+    .then(score => score.update(req.body))
+    .then(score => {
+        res.json({
+          success: true,
+          user: score,
+        });})
+    .catch(err => res.json({err}));
+});
+
+app.delete('/api/scores/:id', (req, res) => {
+  Score.findById(req.params.id)
+    .then(score => score.destroy())
+    .then(() => {res.status(204).json({});})
+    .catch(err => res.status(404).json({err}));
+});
+
 export const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
 
 const extractToken = (req) => (

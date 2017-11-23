@@ -91,6 +91,17 @@ class Client {
     this.removeToken()
   }
 
+  create_score(data) {
+    return fetch( SERVER_HOST + '/api/scores', {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+      },
+      body: data,
+    }).then(this.checkStatus)
+      .then(this.parseJson)
+  }
+
 }
 
 
