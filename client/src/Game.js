@@ -1,24 +1,64 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+class GameContainer extends Component {
+  state = {
+    score: 0
+  };
+
+  handleScoreChanged = (score) => {
+    this.setState({score: score});
+  } 
+
+  onStopClick = () => {
+    console.log("Stop    ");
+  }
+
+  onStartClick = () => {
+    console.log("Start    ");
+  }
+
+  render() {
+    return (
+      <div className='container'>
+        <ScoreComponent
+          score={this.state.score}
+        />
+        <Game
+          onScoreChanged={this.handleScoreChanged}
+        />
+        <button onClick={this.onStartClick} type="button" className="btn btn-success center-block">Start</button>
+        <button onClick={this.onStopClick} type="button" className="btn btn-danger center-block">Stop</button> </div>
+    );
+  }
+}
+
+class ScoreComponent extends Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.score}</h1>
+      </div> 
+    );
+  }
+
+}
 
 class Game extends Component {
   componentDidMount() {
-    //TODO neet to think aboutn defaulg attributes in class
-    this.context = this.refs.canvas.getContext('2d');
     document.addEventListener("keydown", this.handleKeyDown);
-    this.start();
+    this.updateCanvas(); 
   }
-
-  constructor() {
-    super();
+  
+  constructor(props) {
+    super(props);
     this.gamePiece = new Square(30, 30, "red", 10, 120);
     this.gameObstacles = [];
-    this.score = new TextComponent(30, 30, "black", 400, 20);
   }
 
   start = () => {
-    this.interval = setInterval(() => { this.updateCanvas() }, 20)
+    this.interval = setInterval(this.updateCanvas, 20)
     this.frameNo = 0;
   };
 
@@ -44,6 +84,9 @@ class Game extends Component {
       case 40:
         this.gamePiece.moveDown();
         break;
+      case 13:
+        this.start();
+        break;
     }
   };
 
@@ -53,11 +96,9 @@ class Game extends Component {
   };
 
   updateCanvas = () => {
+    this.context = this.refs.canvas.getContext('2d');
     for (let i = 0; i < this.gameObstacles.length; i += 1) {
       if (this.gamePiece.crashWith(this.gameObstacles[i])) {
-        const text = `GAME OVER!!!`;
-        const message = new TextComponent(30, 30, "red", 110, 20);
-        message.update(this.context, text);
         this.stop();
         return;
       }
@@ -80,16 +121,15 @@ class Game extends Component {
       this.gameObstacles[i].update(this.context);
     }
 
+
     this.gamePiece.newPos();
     this.gamePiece.update(this.context);
-
-    const text = `SCORE: ${this.frameNo}`;
-    this.score.update(this.context, text);
+    this.props.onScoreChanged(this.frameNo);
   };
 
   render() {
     return (
-      <div>
+      <div className='column'>
         <canvas ref="canvas" width={480} height={270}/>
         <Link
           to='/logout'
@@ -173,18 +213,4 @@ class Square extends CanvasComponent {
 }
 
 
-class TextComponent extends CanvasComponent {
-  constructor(width, height, color, x, y) {
-    super(width, height, color, x, y)
-    this.text = '';
-  }
-
-  update = (ctx, text) => {
-    this.text = text;
-    ctx.font = this.widh + " " + this.height;
-    ctx.fillStyle = this.color;
-    ctx.fillText(this.text, this.x, this.y);
-  }
-}
-
-export default Game;
+export default GameContainer;
