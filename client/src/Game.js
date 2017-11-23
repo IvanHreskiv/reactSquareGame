@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { client } from './Client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class GameContainer extends Component {
   state = {
-    score: 0
+    score: 0,
   };
 
   handleScoreChanged = (score) => {
@@ -144,9 +143,6 @@ class Game extends Component {
     return (
       <div className='column'>
         <canvas ref="canvas" width={480} height={270}/>
-        <Link to='/logout'>
-          <span>logout</span>
-        </Link>
       </div>
     );
   }
