@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import Login from './Login';
 import Logout from './Logout';
 import Header from './Header';
 import Singup from './Singup';
 import GameContainer from './Game';
+import { client } from './Client'
 
 
 class App extends Component {
@@ -20,7 +22,7 @@ class App extends Component {
             </Link>
           )} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/game' component={GameContainer} />
+          <RouteWhenLoggedIn exact path='/game' component={GameContainer} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />
         </div>
@@ -29,5 +31,15 @@ class App extends Component {
   }
 }
 
+
+const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    client.isLoggedIn() ? (
+      <Component {...props} />
+    ) : (
+      <Redirect to='/login' />
+    )
+  )} />
+);
 
 export default App;

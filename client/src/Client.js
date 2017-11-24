@@ -50,15 +50,7 @@ class Client {
   }
 
   isTokenValid() {
-    const url = SERVER_HOST + '/api/check_token?token=' + this.token;
-    return fetch(url, {
-      method: 'get',
-      headers: {
-        accept: 'application/json',
-      },
-    }).then(this.checkStatus)
-      .then(this.parseJson)
-      .then((json) => json.valid === true)
+    return true;
   }
 
   checkStatus(response) {
@@ -79,13 +71,18 @@ class Client {
 
   login() {
     return fetch( SERVER_HOST + '/api/login', {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-      },
+      method: 'POST',
+      headers: new Headers({
+        'content-type': 'application/json'
+      }),
+      body: JSON.stringify({
+        email: 'demo@demo.com',
+        password: '123456'
+      }),
     }).then(this.checkStatus)
       .then(this.parseJson)
-      .then((json) => this.setToken(json.token)) }
+      .then((json) => this.setToken(json.token))
+  }
 
   logout() {
     this.removeToken()

@@ -39,11 +39,11 @@ app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", true);
   next();
 });
 app.use(function(req, res, next) {
   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
-    console.log()
     jwt.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function(err, decode) {
       if (err) req.user = undefined;
       req.user = decode;
@@ -139,43 +139,8 @@ app.delete('/api/scores/:id', (req, res) => {
     .catch(err => res.status(404).json({err}));
 });
 
-export const API_TOKEN = 'D6W69PRgCoDKgHZGJmRUNA';
-
-const extractToken = (req) => (
-  req.query.token
-);
-
-const authenticatedRoute = ((req, res, next) => {
-  const token = extractToken(req);
-
-  if (token) {
-    if (token === API_TOKEN) {
-      return next();
-    } else {
-      return res.status(403).json({
-        success: false,
-        error: 'Invalid token provided',
-      });
-    }
-  } else {
-    return res.status(403).json({
-      success: false,
-      error: 'No token provided. Supply token as query param `token`',
-    });
-  }
-});
-
-const FAKE_DELAY = 500; // ms
-app.get('/api/login', (req, res) => {
-  setTimeout(() => (
-    res.json({
-      success: true,
-      token: API_TOKEN,
-    })
-  ), FAKE_DELAY);
-});
-
-app.post('/api/sing_in', (req, res) => {
+app.post('/api/login', (req, res) => {
+  console.log(req.body.email);
   User.findOne({where: {email: req.body.email}})
     .then((user) => {
       if (user.password !== req.body.password) {
