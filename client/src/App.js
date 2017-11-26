@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
@@ -11,6 +12,15 @@ import { client } from './Client'
 
 
 class App extends Component {
+  getChildContext = () => {
+    return {
+      user: {
+        name: 'username',
+        email: 'email@rmail.com'
+      }
+    };
+  }
+
   render() {
     return (
       <Router>
@@ -30,6 +40,11 @@ class App extends Component {
     );
   }
 }
+
+App.childContextTypes = {
+  user: PropTypes.object
+};
+
 
 
 const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (

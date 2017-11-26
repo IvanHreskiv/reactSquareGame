@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { client } from './Client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -16,7 +17,7 @@ class GameContainer extends Component {
   }
 
   onStartClick = () => {
-    console.log("Start    ");
+    console.log(this.context.user);
   }
 
   onSaveClick = () => {
@@ -44,6 +45,10 @@ class GameContainer extends Component {
     );
   }
 }
+
+GameContainer.contextTypes = {
+  user: PropTypes.object
+};
 
 class ScoreComponent extends Component {
   render() {
