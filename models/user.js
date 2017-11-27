@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
         len: [1, 50]
-      }
-    },
+      } },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,25 +26,25 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     indexes: [{unique: true, fields: ['email', 'username']}],
     classMethods: {
-      hashPassword: function(password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-      },
-      validPassword: function(password) {
-        return bcrypt.compareSync(password, bcrypt.genSaltSync(8), null);
-      },
       associate: function(models) {
         // associations can be defined here
-      }
+      },
+    },
+    instanceMethods: {
+      hashPassword: function() {
+        return bcrypt.hashSync(this.password, bcrypt.genSaltSync(8), null);
+      },
+      validPassword: function(password) {
+        return bcrypt.compare(password, this.password);
+      },
     }
   });
 
   User.beforeCreate((user, options) => {
-    return hashPassword(user.password).then(hashedPw => {
-      user.password = heshedPw;
-    });
+    user.hashPassword();
   });
 
-
+  User.sync();
 
   return User;
 };
