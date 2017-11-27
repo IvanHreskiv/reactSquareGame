@@ -2,9 +2,25 @@
 
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
-    firstName: DataTypes.STRING,
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1, 50]
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true, 
+        isEmail: true, 
+        len: [1, 255]
+      }
+    },
+    firstname: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     classMethods: {
@@ -14,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  //TODO: Need to investigate how to make pswd as hash
-  User.prototype.comparePassword = function(password) {
-    bcrypt.compareSync(password, this.password);
-  } 
 
   return User;
 };
