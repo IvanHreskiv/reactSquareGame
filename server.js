@@ -77,10 +77,10 @@ app.get('/api/users/:id', loginRequired, (req, res) => {
     }).catch(err => res.json({err}));
 });
 
-app.post('/api/users', loginRequired, (req, res) => {
+app.post('/api/users', (req, res) => {
   User.create(req.body)
   .then((user) => { res.status(201).json({success: true, user: user,}); })
-  .catch(err => res.json({err}));
+  .catch(err => res.json(err));
 });
 
 app.patch('/api/users/:id', loginRequired, (req, res) => {

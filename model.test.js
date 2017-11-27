@@ -49,5 +49,12 @@ describe('UserTest', function () {
       expect(errors.name).toEqual('SequelizeValidationError');
     });
   });
+  //TODO: create test more test
+
+  it('password should be heshed', function() {
+    user.save().then(function(errors) {
+      expect(errors.name).toEqual('SequelizeValidationError');
+    });
+  });
 
 });
