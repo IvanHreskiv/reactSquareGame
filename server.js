@@ -4,8 +4,12 @@ import morgan from 'morgan';
 import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken';
+import simpleOauthModule from 'simple-oauth2';
+import http from 'http';
+require('dotenv').config();
 var models = require('./models');
 
+console.log(process.env.CLIENT_ID);
 
 const Op = Sequelize.Op;
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -31,7 +35,26 @@ sequelize
     console.error('Unable to connect to the database:', err); 
   });
 
+const oauth2 = simpleOauthModule.create({
+  client: {
+    id: process.env.FB_CLIENT_ID,
+    secret: process.env.FB_SECRET,
+  },
+  auth: {
+    tokenHost: 'https://www.facebook.com',
+    tokenPath: 'https://graph.facebook.com/oauth/access_token',
+    authorizePath: '/v2.11/dialog/oauth',
+  },
+});
+
+const authorizationUri = oauth2.authorizationCode.authorizeURL({
+  redirect_uri: 'http://localhost:3001/callback',
+  scope: 'email',
+  state: '3(#0/!~'
+});
+
 const app = express();
+
 
 
 app.set('port', (process.env.API_PORT || 3001));
@@ -65,6 +88,43 @@ function loginRequired(req, res, next) {
     return res.status(401).json({ message: 'Unauthorized user!'}); 
   }  
 }
+
+app.get('/auth', (req, res) => {
+  console.log(authorizationUri);
+  res.redirect(authorizationUri);
+});
+
+app.get('/callback', (req, res) => {
+  const code = req.query.code;
+  const options = {
+    code: code,
+    redirect_uri: 'http://localhost:3001/callback'
+  };
+
+  oauth2.authorizationCode.getToken(options, (error, result) => {
+    if (error) {
+      console.error('Access Token Error', error.message);
+      return res.json('Authentication failed');
+    }
+
+    console.log('The resulting token: ', result);
+    const token = oauth2.accessToken.create(result);
+    const options = {
+      host: 'https://graph.facebook.com',
+      path: '/me'
+    };
+
+http.get(options, function(resp){
+  resp.on('data', function(chunk){
+    //do something with chunk
+  });
+}).on("error", function(e){
+  console.log("Got error: " + e.message);
+});
+
+    return res.status(200).json(token);
+  });
+});
 
 const User = models.User;
 app.get('/api/users/:id', loginRequired, (req, res) => {
