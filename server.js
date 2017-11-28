@@ -142,7 +142,7 @@ app.post('/api/login', (req, res) => {
   console.log(req.body.email);
   User.findOne({where: {email: req.body.email}})
     .then((user) => {
-      if (user.password !== req.body.password) {
+      if (!user.validPassword(req.body.password)) {
         res.status(401).json({ message: 'Authentication failed. Wrong password.' });
       } else {
         res.json({token: jwt.sign({email: user.email, firstName: user.firstName, id: user.id}, 'RESTFULAPIs')});
