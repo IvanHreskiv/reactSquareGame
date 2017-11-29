@@ -99,6 +99,17 @@ class Client {
       .then(this.parseJson)
   }
 
+  create_user(data) {
+    return fetch( SERVER_HOST + '/api/users', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: data,
+    }).then(this.checkStatus)
+      .then(this.parseJson)
+  }
+
 }
 
 

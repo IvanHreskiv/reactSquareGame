@@ -199,7 +199,6 @@ app.delete('/api/scores/:id', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  console.log(req.body.email);
   User.findOne({where: {email: req.body.email}})
     .then((user) => {
       if (!user.validPassword(req.body.password)) {

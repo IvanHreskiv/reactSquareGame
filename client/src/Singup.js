@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import isEmail from 'validator/lib/isEmail';
 import Field from './Field';
+import { client } from './Client'
 
 
 class Singup extends Component {
@@ -21,9 +22,13 @@ class Singup extends Component {
     evt.preventDefault();
 
     if (this.validate()) return;
+      people.push(person);
 
-    people.push(person);
-    this.setState({ people, fields: {} });
+      client.create_user(JSON.stringify(person))
+        .then((person) => {
+          this.setState({ people, fields: {} });
+        })
+        .catch(err => console.log(err));
   }
 
   onInputChange = ({ name, value, error }) => {
@@ -41,7 +46,7 @@ class Singup extends Component {
     const fieldErrors = this.state.fieldErrors;
     const errMessages = Object.keys(fieldErrors).filter((k) => fieldErrors[k]);
 
-    if (!person.name) return true;
+    if (!person.username) return true;
     if (!person.email) return true;
     if (errMessages.length) return true;
 
@@ -57,7 +62,7 @@ class Singup extends Component {
 
           <Field
             placeholder='Name'
-            name='name'
+            name='username'
             value={this.state.fields.name}
             onChange={this.onInputChange}
             validate={(val) => (val ? false : 'Name Required')}
@@ -77,15 +82,6 @@ class Singup extends Component {
 
           <input type='submit' disabled={this.validate()} />
         </form>
-
-        <div>
-          <h3>People</h3>
-          <ul>
-            { this.state.people.map(({ name, email }, i) =>
-              <li key={i}>{name} ({email})</li>
-            ) }
-          </ul>
-        </div>
       </div>
     );
   }
