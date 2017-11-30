@@ -31,7 +31,7 @@ class GameContainer extends Component {
 
   render() {
     return (
-      <div className='container'>
+      <div>
         <ScoreComponent
           score={this.state.score}
         />
@@ -146,9 +146,7 @@ class Game extends Component {
 
   render() {
     return (
-      <div className='column'>
         <canvas ref="canvas" width={480} height={270}/>
-      </div>
     );
   }
 }

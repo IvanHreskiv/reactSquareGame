@@ -22,7 +22,7 @@ class Client {
     }
   }
   isLoggedIn() {
-    return !!this.token
+    return true//!!this.token
   }
 
   subscribe(cb) {
