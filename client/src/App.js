@@ -6,7 +6,6 @@ import { Redirect } from 'react-router';
 import Login from './Login';
 import Main from './Main';
 import Logout from './Logout';
-import Header from './Header';
 import Singup from './Singup';
 import { client } from './Client'
 

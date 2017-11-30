@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './App.css';
 import PropTypes from 'prop-types';
 import { client } from './Client'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -38,9 +39,12 @@ class GameContainer extends Component {
         <Game
           onScoreChanged={this.handleScoreChanged}
         />
-        <button onClick={this.onStartClick} type="button" className="btn btn-success center-block">Start</button>
-        <button onClick={this.onStopClick} type="button" className="btn btn-danger center-block">Stop</button>
-        <button onClick={this.onSaveClick} type="button" className="btn btn-primary center-block">Save</button>
+
+        <br />
+
+        <button onClick={this.onStartClick} type="button" className="btn btn-success center-block col-sm-3 M-30px">Start</button>
+        <button onClick={this.onStopClick} type="button" className="btn btn-danger center-block col-sm-3 M-30px">Stop</button>
+        <button onClick={this.onSaveClick} type="button" className="btn btn-warning center-block col-sm-3 M-30px">Save</button>
       </div>
     );
   }
@@ -66,7 +70,8 @@ class Game extends Component {
     document.addEventListener("keydown", this.handleKeyDown);
     this.gamePiece = new Square(30, 30, "red", 10, 120);
     this.gameObstacles = [];
-    this.updateCanvas(); 
+    this.updateCanvas();
+    this.start();
   }
 
   componentWillUnmount() {
@@ -74,6 +79,7 @@ class Game extends Component {
   }
 
   start = () => {
+    console.log(this.refs);
     this.interval = setInterval(this.updateCanvas, 20)
     this.frameNo = 0;
   };

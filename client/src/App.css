@@ -40,6 +40,10 @@
   margin: 3px 3px 3px 3px;
 }
 
+.M-30px {
+  margin: 30px 30px 30px 30px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
