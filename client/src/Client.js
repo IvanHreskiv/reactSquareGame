@@ -22,7 +22,7 @@ class Client {
     }
   }
   isLoggedIn() {
-    return true//!!this.token
+    return !!this.token
   }
 
   subscribe(cb) {
@@ -69,16 +69,13 @@ class Client {
   }
 
 
-  login() {
+  login(data) {
     return fetch( SERVER_HOST + '/api/login', {
       method: 'POST',
       headers: new Headers({
         'content-type': 'application/json'
       }),
-      body: JSON.stringify({
-        email: 'demo@demo.com',
-        password: '123456'
-      }),
+      body: data,
     }).then(this.checkStatus)
       .then(this.parseJson)
       .then((json) => this.setToken(json.token))
@@ -108,6 +105,7 @@ class Client {
       body: data,
     }).then(this.checkStatus)
       .then(this.parseJson)
+      .then((json) => this.setToken(json.token))
   }
 
 }

@@ -11,11 +11,9 @@ var models = require('./models');
 
 console.log(process.env.CLIENT_ID);
 
-const Op = Sequelize.Op;
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
   dialect: 'sqlite',
-  operatorsAliases: Op,
   pool: {
     max: 5,
     min: 0,
@@ -139,7 +137,12 @@ app.get('/api/users/:id', loginRequired, (req, res) => {
 
 app.post('/api/users', (req, res) => {
   User.create(req.body)
-  .then((user) => { res.status(201).json({success: true, user: user,}); })
+  .then((user) => { res.status(201).json({
+       success: true,
+       user: user,
+       token: jwt.sign({email: user.email, firstName: user.firstName, id: user.id}, 'RESTFULAPIs')
+     });
+   })
   .catch(err => res.json(err));
 });
 
@@ -199,7 +202,10 @@ app.delete('/api/scores/:id', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  User.findOne({where: {email: req.body.email}})
+  User.findOne({where: {
+         $or : [{username: req.body.username}, {email: req.body.email}]
+       }
+     })
     .then((user) => {
       if (!user.validPassword(req.body.password)) {
         res.status(401).json({ message: 'Authentication failed. Wrong password.' });

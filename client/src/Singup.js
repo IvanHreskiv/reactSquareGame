@@ -59,6 +59,7 @@ class Singup extends Component {
 
     if (!person.username) return true;
     if (!person.email) return true;
+    if (!person.password) return true;
     if (errMessages.length) return true;
 
     return false;
@@ -91,6 +92,16 @@ class Singup extends Component {
               value={this.state.fields.email}
               onChange={this.onInputChange}
               validate={(val) => (isEmail(val) ? false : 'Invalid Email')}
+            />
+
+            <br />
+
+            <Field
+              placeholder='Password'
+              name='password'
+              value={this.state.fields.password}
+              onChange={this.onInputChange}
+              validate={(val) => (val ? false : 'Pssword Required')}
             />
 
             <br />
