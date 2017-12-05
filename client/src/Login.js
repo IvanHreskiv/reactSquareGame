@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import Field from './Field';
 import { Redirect } from 'react-router';
 import { client } from './Client'
+import 'bootstrap-social';
+import 'font-awesome/css/font-awesome.min.css';
+
 
 class Login extends Component {
   constructor(props) {
@@ -91,6 +94,11 @@ class Login extends Component {
               </Link>
             </p>
           </form>
+          <Link to='/auth'>
+            <div className="btn btn-block btn-social btn-facebook">
+              <span className="fa fa-tter"></span> Sign in with Facebook
+            </div>
+          </Link>
         </div>
       </div>
 

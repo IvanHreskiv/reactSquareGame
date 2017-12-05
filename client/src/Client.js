@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch'
 
 const LOCAL_STORAGE_KEY = 'sr-spotiafy-fake-auth';
-const SERVER_HOST = 'http://localhost:3001';
+const SERVER_HOST = 'http://squaregame.com:3001';
 
 
 class Client {
@@ -108,6 +108,12 @@ class Client {
       .then((json) => this.setToken(json.token))
   }
 
+  authenticate() {
+      return fetch( SERVER_HOST + '/auth', {
+          method: 'GET',
+      }).then(this.checkStatus)
+        .then(this.parseJson)
+  }
 }
 
 

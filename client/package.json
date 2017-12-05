@@ -6,17 +6,19 @@
     "react-scripts": "1.0.17"
   },
   "dependencies": {
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
-    "react-router-dom": "latest",
+    "babel-eslint": "latest",
+    "bootstrap": "latest",
+    "bootstrap-social": "^5.1.1",
+    "eslint": "latest",
+    "eslint-plugin-babel": "latest",
+    "eslint-plugin-react": "latest",
     "isomorphic-fetch": "2.2.1",
     "moment": "latest",
-    "eslint": "latest",
-    "babel-eslint": "latest",
-    "validator": "latest",
-    "bootstrap": "latest",
-    "eslint-plugin-react": "latest",
-    "eslint-plugin-babel": "latest"
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-fontawesome": "^1.6.1",
+    "react-router-dom": "latest",
+    "validator": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

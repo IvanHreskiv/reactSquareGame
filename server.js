@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import simpleOauthModule from 'simple-oauth2';
 import http from 'http';
 require('dotenv').config();
-var models = require('./models');
+const models = require('./models');
 
 console.log(process.env.CLIENT_ID);
 
@@ -33,23 +33,6 @@ sequelize
     console.error('Unable to connect to the database:', err); 
   });
 
-const oauth2 = simpleOauthModule.create({
-  client: {
-    id: process.env.FB_CLIENT_ID,
-    secret: process.env.FB_SECRET,
-  },
-  auth: {
-    tokenHost: 'https://www.facebook.com',
-    tokenPath: 'https://graph.facebook.com/oauth/access_token',
-    authorizePath: '/v2.11/dialog/oauth',
-  },
-});
-
-const authorizationUri = oauth2.authorizationCode.authorizeURL({
-  redirect_uri: 'http://localhost:3001/callback',
-  scope: 'email',
-  state: '3(#0/!~'
-});
 
 const app = express();
 
@@ -60,6 +43,7 @@ app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Credentials', true);
   next();
 });
 app.use(function(req, res, next) {
@@ -87,8 +71,26 @@ function loginRequired(req, res, next) {
   }  
 }
 
+const oauth2 = simpleOauthModule.create({
+    client: {
+        id: process.env.FB_CLIENT_ID,
+        secret: process.env.FB_SECRET,
+    },
+    auth: {
+        tokenHost: 'https://www.facebook.com',
+        tokenPath: 'https://graph.facebook.com/oauth/access_token',
+        authorizePath: '/v2.11/dialog/oauth',
+    },
+});
+
+const authorizationUri = oauth2.authorizationCode.authorizeURL({
+    redirect_uri: 'http://localhost:3001/callback',
+    scope: 'email',
+    state: '3(#0/!~'
+});
+
 app.get('/auth', (req, res) => {
-  console.log(authorizationUri);
+  console.log(res);
   res.redirect(authorizationUri);
 });
 
@@ -111,14 +113,6 @@ app.get('/callback', (req, res) => {
       host: 'https://graph.facebook.com',
       path: '/me'
     };
-
-http.get(options, function(resp){
-  resp.on('data', function(chunk){
-    //do something with chunk
-  });
-}).on("error", function(e){
-  console.log("Got error: " + e.message);
-});
 
     return res.status(200).json(token);
   });

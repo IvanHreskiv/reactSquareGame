@@ -29,6 +29,7 @@ class App extends Component {
           <RouteWhenLoggedIn exact path='/game' component={Main} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />
+          <Route exact path='/auth' component={Auth} />
         </div>
       </Router>
     );
@@ -51,4 +52,18 @@ const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
   )} />
 );
 
+class Auth extends Component {
+
+    constructor(props) {
+      super(props);
+
+      client.authenticate()
+    }
+
+    render() {
+        return (
+            <div>Hello</div>
+        );
+    }
+}
 export default App;
