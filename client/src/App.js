@@ -14,6 +14,7 @@ class App extends Component {
   getChildContext = () => {
     return {
       user: {
+        id: 1,
         name: 'username',
         email: 'email@rmail.com'
       }

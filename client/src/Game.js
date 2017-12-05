@@ -23,7 +23,7 @@ class GameContainer extends Component {
 
   onSaveClick = () => {
     const data = {
-      user_id: 1,
+      user_id: this.context.user.id,
       score: this.state.score,
     };
     client.create_score(data);
