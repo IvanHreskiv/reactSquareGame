@@ -47,6 +47,7 @@ class Login extends Component {
 
     if (!person.username) return true;
     if (!person.password) return true;
+    if (errMessages.length) return true;
 
     return false;
   }
@@ -64,14 +65,14 @@ class Login extends Component {
             <Field
               placeholder='UserName'
               name='username'
-              value={this.state.fields.username}
+              value={this.state.fields.username || ''}
               onChange={this.onInputChange}
               validate={(val) => (val ? false : 'UaerName Required')}
             />
             <Field
               placeholder='Password'
               name='password'
-              value={this.state.fields.password}
+              value={this.state.fields.password || ''}
               onChange={this.onInputChange}
               validate={(val) => (val ? false : 'Password Required')}
             />

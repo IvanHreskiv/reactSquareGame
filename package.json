@@ -32,7 +32,7 @@
     "sequelize-cli": "latest",
     "simple-oauth2": "^1.4.0",
     "sqlite": "latest",
-    "sqlite3": "latest",
+    "sqlite3": "^3.1.13",
     "superagent": "^3.8.1",
     "supertest": "^2.0.1",
     "urijs": "1.18.2"

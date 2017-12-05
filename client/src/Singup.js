@@ -65,7 +65,7 @@ class Singup extends Component {
     return false;
   }
 
-  render = () => {
+  render() {
     if (this.state.shouldRedirect) {
       return (
         <Redirect to='/game' />
@@ -75,11 +75,10 @@ class Singup extends Component {
         <div className="login-page">
          <div className="login-form">
           <form className="login-form" onSubmit={this.onFormSubmit}>
-
             <Field
               placeholder='Name'
               name='username'
-              value={this.state.fields.name}
+              value={this.state.fields.username || ''}
               onChange={this.onInputChange}
               validate={(val) => (val ? false : 'Name Required')}
             />
@@ -89,7 +88,7 @@ class Singup extends Component {
             <Field
               placeholder='Email'
               name='email'
-              value={this.state.fields.email}
+              value={this.state.fields.email || ''}
               onChange={this.onInputChange}
               validate={(val) => (isEmail(val) ? false : 'Invalid Email')}
             />
@@ -99,12 +98,22 @@ class Singup extends Component {
             <Field
               placeholder='Password'
               name='password'
-              value={this.state.fields.password}
+              value={this.state.fields.password || ''}
               onChange={this.onInputChange}
-              validate={(val) => (val ? false : 'Pssword Required')}
+              validate={(val) => (val ? false : 'Password Required')}
             />
 
             <br />
+
+            <Field
+                  placeholder='Confirm Password'
+                  name='confirmPassword'
+                  value={this.state.fields.confirmPassword || ''}
+                  onChange={this.onInputChange}
+                  validate={(val) => ((val === this.state.fields.password) ? false : 'Confirm Password does not match')}
+              />
+
+              <br />
             {
               this.state.singupInProgress ? (
                 <div>LOADS...</div>

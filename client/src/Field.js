@@ -7,7 +7,7 @@ class Field extends Component {
 
     this.state = {
       value: this.props.value,
-      errror: false,
+      error: false,
     };
   }
 
@@ -23,7 +23,6 @@ class Field extends Component {
     this.setState({ value, error });
     this.props.onChange({ name, value, error });
   }
-
 
   render = () => {
     return (
