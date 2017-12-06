@@ -18,12 +18,12 @@ class GameContainer extends Component {
   }
 
   onStartClick = () => {
-    console.log(this.context.user);
+    console.log('Start');
   }
 
   onSaveClick = () => {
     const data = {
-      user_id: this.context.user.id,
+      user_id: this.props.user_id,
       score: this.state.score,
     };
     client.create_score(data);

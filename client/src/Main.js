@@ -12,7 +12,9 @@ class Main extends Component {
           <Link to='/logout'><button type="button" className="btn btn-info" id="logout">Log Out</button></Link>
         </div>
         <div className="col-sm-4 bg-primary rounded-35px">
-          <GameContainer/>
+          <GameContainer
+            user_id={this.props.user_id}
+          />
         </div>
         <div className="col-sm-3 bg-success rounded-35px">
           <div className="alert alert-info M-3px">

@@ -7,6 +7,7 @@ import Main from './Main';
 import Logout from './Logout';
 import Singup from './Singup';
 import { client } from './Client'
+import GameContainer from "./Game";
 
 
 class App extends Component {
@@ -31,7 +32,9 @@ class App extends Component {
           <Route exact path='/login'
             render={(props) => <Login {...props} handleUserLoggedIn={this.onUserLoggedIn}/>}
           />
-          <RouteWhenLoggedIn exact path='/game' component={Main} />
+          <Route exact path='/game'
+                 render={(props) => <Main {...props} user_id={this.user_id}/>}
+          />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />
           <Route exact path='/auth' component={Auth} />
@@ -42,6 +45,7 @@ class App extends Component {
 }
 
 
+//TODO need to ability to pass addition props
 const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
     client.isLoggedIn() ? (
