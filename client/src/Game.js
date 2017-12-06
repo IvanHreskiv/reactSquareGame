@@ -26,7 +26,7 @@ class GameContainer extends Component {
       user_id: this.props.user_id,
       score: this.state.score,
     };
-    client.create_score(data);
+    client.create_score(JSON.stringify(data));
     console.log("Save");
   }
 

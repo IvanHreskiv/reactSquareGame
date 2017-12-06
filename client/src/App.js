@@ -33,7 +33,7 @@ class App extends Component {
             render={(props) => <Login {...props} handleUserLoggedIn={this.onUserLoggedIn}/>}
           />
           <Route exact path='/game'
-                 render={(props) => <Main {...props} user_id={this.user_id}/>}
+                 render={(props) => <Main {...props} user_id={this.state.user_id}/>}
           />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />

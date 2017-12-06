@@ -42,8 +42,8 @@ app.set('port', (process.env.API_PORT || 3001));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', true);
+  res.header("Access-Control-Allow-Methos", "*");
+  res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 app.use(function(req, res, next) {
@@ -90,7 +90,6 @@ const authorizationUri = oauth2.authorizationCode.authorizeURL({
 });
 
 app.get('/auth', (req, res) => {
-  console.log(res);
   res.redirect(authorizationUri);
 });
 
@@ -159,7 +158,7 @@ app.delete('/api/users/:id', loginRequired, (req, res) => {
 });
 
 const Score = models.Score;
-app.get('/api/scores/:id', (req, res) => {
+app.get('/api/scores/:id', loginRequired,(req, res) => {
   Score.findById(req.params.id)
     .then(score => {
         res.json({
@@ -171,13 +170,13 @@ app.get('/api/scores/:id', (req, res) => {
 
 //var new_d1 = Object.keys(dict).map(function(key) {return dict[key];});
 // A fake API token we validate against
-app.post('/api/scores', (req, res) => {
+app.post('/api/scores', loginRequired, (req, res) => {
   Score.create(req.body)
   .then((score) => { res.status(201).json({success: true, user: score,}); })
   .catch(err => res.json({err}));
 });
 
-app.patch('/api/scores/:id', (req, res) => {
+app.patch('/api/scores/:id', loginRequired, (req, res) => {
   Score.findById(req.params.id)
     .then(score => score.update(req.body))
     .then(score => {
@@ -188,7 +187,7 @@ app.patch('/api/scores/:id', (req, res) => {
     .catch(err => res.json({err}));
 });
 
-app.delete('/api/scores/:id', (req, res) => {
+app.delete('/api/scores/:id', loginRequired, (req, res) => {
   Score.findById(req.params.id)
     .then(score => score.destroy())
     .then(() => {res.status(204).json({});})
@@ -204,7 +203,7 @@ app.post('/api/login', (req, res) => {
       if (!user.validPassword(req.body.password)) {
         res.status(401).json({ message: 'Authentication failed. Wrong password.' });
       } else {
-        res.json({token: jwt.sign({id: user.id}, 'RESTFULAPIs')});
+        res.json({token: jwt.sign({id: user.id}, 'RESTFULAPIs', { expiresIn: 60 * 60 })})
       }
     }).catch(err => res.json({err}));
 });

@@ -81,9 +81,10 @@ class Client {
   create_score(data) {
     return fetch( SERVER_HOST + '/api/scores', {
       method: 'POST',
-      headers: {
-        accept: 'application/json',
-      },
+      headers: new Headers({
+        'content-type': 'application/json',
+        'Authorization': 'JWT ' + this.token,
+      }),
       body: data,
     }).then(this.checkStatus)
       .then(this.parseJson)
@@ -92,9 +93,9 @@ class Client {
   create_user(data) {
     return fetch( SERVER_HOST + '/api/users', {
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: new Headers({
+        'content-type': 'application/json',
+      }),
       body: data,
     }).then(this.checkStatus)
       .then(this.parseJson)
