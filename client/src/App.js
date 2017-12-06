@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Redirect } from 'react-router';
@@ -11,14 +10,17 @@ import { client } from './Client'
 
 
 class App extends Component {
-  getChildContext = () => {
-    return {
-      user: {
-        id: 1,
-        name: 'username',
-        email: 'email@rmail.com'
-      }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user_id: null,
     };
+  }
+
+  onUserLoggedIn = (id) => {
+    this.setState({user_id: id});
+    console.log(this.state);
   }
 
   render() {
@@ -26,7 +28,9 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path='/' component={Login} />
-          <Route exact path='/login' component={Login} />
+          <Route exact path='/login'
+            render={(props) => <Login {...props} handleUserLoggedIn={this.onUserLoggedIn}/>}
+          />
           <RouteWhenLoggedIn exact path='/game' component={Main} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />
@@ -36,11 +40,6 @@ class App extends Component {
     );
   }
 }
-
-App.childContextTypes = {
-  user: PropTypes.object
-};
-
 
 
 const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (

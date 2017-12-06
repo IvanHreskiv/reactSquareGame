@@ -9,3 +9,6 @@ curl -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImR
 
 
  curl 'https://graph.facebook.com/me?fields=email,name&access_token=' | jq .
+
+
+curl 'http://squaregame.com:3001/api/login' -H 'Host: squaregame.com:3001' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: http://localhost:3000/' -H 'content-type: application/json' -H 'origin: http://localhost:3000' -H 'Connection: keep-alive' --data '{"username":"username1","password":"12345678"}'

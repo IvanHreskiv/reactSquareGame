@@ -20,12 +20,26 @@ class Login extends Component {
     };
   }
 
+  decodeToken = (jwt) => {
+    const [headerB64, payloadB64] = jwt.split('.');
+    const headerStr = new Buffer(headerB64, 'base64').toString();
+    const payloadStr = new Buffer(payloadB64, 'base64').toString();
+    return {
+      header: JSON.parse(headerStr),
+      payload: JSON.parse(payloadStr)
+    };
+  }
+
   //TODO: it has a lot in common with singup component
   performLogin = () => {
     const person = this.state.fields;
     this.setState({ loginInProgress: true});
     client.login(JSON.stringify(person))
-    .then(() => {this.setState({ shouldRedirect: true}); console.log("Accepted")});
+    .then(token => this.decodeToken(token))
+    .then((decodedToken) => {
+      this.setState({ shouldRedirect: true});
+      this.props.handleUserLoggedIn(decodedToken.payload.id);
+    });
   };
 
   onInputChange = ({ name, value, error }) => {

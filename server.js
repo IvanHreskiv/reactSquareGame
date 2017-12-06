@@ -204,7 +204,7 @@ app.post('/api/login', (req, res) => {
       if (!user.validPassword(req.body.password)) {
         res.status(401).json({ message: 'Authentication failed. Wrong password.' });
       } else {
-        res.json({token: jwt.sign({email: user.email, firstName: user.firstName, id: user.id}, 'RESTFULAPIs')});
+        res.json({token: jwt.sign({id: user.id}, 'RESTFULAPIs')});
       }
     }).catch(err => res.json({err}));
 });
