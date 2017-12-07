@@ -1,54 +1,43 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import avatar from './avatar.jpg';
+import { Link } from 'react-router-dom';
+import { client } from './Client'
+import './UserInfo.css';
 import 'bootstrap-social';
 import 'font-awesome/css/font-awesome.min.css';
 
-class UserInfo extends React {
+class UserInfo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      username: 'jdoe',
+      fName: 'John',
+      lName: 'Doe',
+      email: 'jdoe@gmail.com'
+    };
+  }
+
+  componentDidMount() {
+    client.getUser(21)
+    .then((res) => {
+      this.setState({
+        username: res.user.username,
+        fName: res.user.firstName,
+        lName: res.user.lastName,
+        email: res.user.email
+      });
+    });
   }
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-3 col-sm-6">
-
-            <div className="card hovercard">
-              <div className="cardheader">
-
-              </div>
-              <div className="avatar">
-                <img alt="" src="http://lorempixel.com/100/100/people/9/">
-              </div>
-              <div className="info">
-                <div className="title">
-                  <a target="_blank" href="http://scripteden.com/">Script Eden</a>
-                </div>
-                <div className="desc">Passionate designer</div>
-                <div className="desc">Curious developer</div>
-                <div className="desc">Tech geek</div>
-              </div>
-              <div className="bottom">
-                <a className="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
-                  <i className="fa fa-twitter"></i>
-                </a>
-                <a className="btn btn-danger btn-sm" rel="publisher"
-                   href="https://plus.google.com/+ahmshahnuralam">
-                  <i className="fa fa-google-plus"></i>
-                </a>
-                <a className="btn btn-primary btn-sm" rel="publisher"
-                   href="https://plus.google.com/shahnuralam">
-                  <i className="fa fa-facebook"></i>
-                </a>
-                <a className="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
-                  <i className="fa fa-behance"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="card">
+          <h1>{this.state.username}</h1>
+        <img src={avatar} alt="John" className="h-100%"/>
+          <p className="title">{this.state.fName + ' ' + this.state.lName }</p>
+          <p>{this.state.email}</p>
+        <Link to='/logout'><button type="button">Log Out</button></Link>
       </div>
     );
   }

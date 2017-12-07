@@ -7,7 +7,6 @@ import Main from './Main';
 import Logout from './Logout';
 import Singup from './Singup';
 import { client } from './Client'
-import GameContainer from "./Game";
 
 
 class App extends Component {

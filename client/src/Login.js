@@ -110,7 +110,7 @@ class Login extends Component {
           </form>
           <Link to='/auth'>
             <div className="btn btn-block btn-social btn-facebook">
-              <span className="fa fa-tter"></span> Sign in with Facebook
+              <span className="fa fa-facebook"></span> Sign in with Facebook
             </div>
           </Link>
         </div>

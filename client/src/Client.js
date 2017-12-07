@@ -90,6 +90,17 @@ class Client {
       .then(this.parseJson)
   }
 
+  getUser(id) {
+    return fetch( SERVER_HOST +`/api/users/${id}`, {
+      method: 'GET',
+      headers: new Headers({
+        'content-type': 'application/json',
+        'Authorization': 'JWT ' + this.token,
+      }),
+    }).then(this.checkStatus)
+      .then(this.parseJson)
+  }
+
   create_user(data) {
     return fetch( SERVER_HOST + '/api/users', {
       method: 'POST',
