@@ -5,23 +5,25 @@ const SERVER_HOST = 'http://squaregame.com:3001';
 
 
 class Client {
-  counstructor() {
+  constructor() {
     this.useLocalStorage = (typeof localStorage !== 'undefined');
 
     if (this.useLocalStorage) {
       this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
+      console.log(this.token);
 
       if (this.token) {
         this.isTokenValid().then((bool) => {
           if (!bool) {
             this.token = null
           }
-        })  
+        })
       }
     }
   }
+
   isLoggedIn() {
-    return !!this.token
+    return !!this.token;
   }
 
   setToken(token) {
@@ -30,8 +32,6 @@ class Client {
     if (this.useLocaltorage) {
       localStorage.setItem(LOCAL_STORAGE_KEY, token)
     }
-
-    return token
   }
 
   removeToken() {
@@ -120,6 +120,5 @@ class Client {
         .then(this.parseJson)
   }
 }
-
 
 export const client = new Client();

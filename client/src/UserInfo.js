@@ -19,7 +19,7 @@ class UserInfo extends Component {
   }
 
   componentDidMount() {
-    client.getUser(21)
+    client.getUser(this.props.user_id)
     .then((res) => {
       this.setState({
         username: res.user.username,

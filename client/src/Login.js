@@ -12,6 +12,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
 
+    console.log(localStorage.getItem('sr-spotiafy-fake-auth'));
     this.state = {
       fields: {},
       fieldErrors: {},
@@ -20,26 +21,13 @@ class Login extends Component {
     };
   }
 
-  decodeToken = (jwt) => {
-    const [headerB64, payloadB64] = jwt.split('.');
-    const headerStr = new Buffer(headerB64, 'base64').toString();
-    const payloadStr = new Buffer(payloadB64, 'base64').toString();
-    return {
-      header: JSON.parse(headerStr),
-      payload: JSON.parse(payloadStr)
-    };
-  }
 
   //TODO: it has a lot in common with singup component
   performLogin = () => {
     const person = this.state.fields;
     this.setState({ loginInProgress: true});
     client.login(JSON.stringify(person))
-    .then(token => this.decodeToken(token))
-    .then((decodedToken) => {
-      this.setState({ shouldRedirect: true});
-      this.props.handleUserLoggedIn(decodedToken.payload.id);
-    });
+    .then((token) => {this.setState({ shouldRedirect: true});});
   };
 
   onInputChange = ({ name, value, error }) => {
@@ -72,7 +60,7 @@ class Login extends Component {
   render() {
     if (this.state.shouldRedirect) {
       return (
-        <Redirect to='/game' />
+        <Redirect to='/' />
       );
     } else {
       return (

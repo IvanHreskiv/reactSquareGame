@@ -10,30 +10,12 @@ import { client } from './Client'
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user_id: null,
-    };
-  }
-
-  onUserLoggedIn = (id) => {
-    this.setState({user_id: id});
-    console.log(this.state);
-  }
-
   render() {
     return (
       <Router>
         <div>
-          <Route exact path='/' component={Login} />
-          <Route exact path='/login'
-            render={(props) => <Login {...props} handleUserLoggedIn={this.onUserLoggedIn}/>}
-          />
-          <Route exact path='/game'
-                 render={(props) => <Main {...props} user_id={this.state.user_id}/>}
-          />
+          <RouteWhenLoggedIn exact path='/' component={Main} />
+          <Route exact path='/login' component={Login} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/singup' component={Singup} />
           <Route exact path='/auth' component={Auth} />

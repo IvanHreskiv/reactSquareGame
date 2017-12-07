@@ -26,7 +26,7 @@ class GameContainer extends Component {
       user_id: this.props.user_id,
       score: this.state.score,
     };
-    client.create_score(JSON.stringify(data));
+    client.create_score(data);
     console.log("Save");
   }
 
@@ -79,7 +79,6 @@ class Game extends Component {
   }
 
   start = () => {
-    console.log(this.refs);
     this.interval = setInterval(this.updateCanvas, 20)
     this.frameNo = 0;
   };
@@ -152,7 +151,7 @@ class Game extends Component {
 
   render() {
     return (
-        <canvas ref="canvas" width={480} height={270}/>
+        <canvas ref="canvas" width={460} height={270}/>
     );
   }
 }
