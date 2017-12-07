@@ -3,6 +3,7 @@ import './App.css';
 import { client } from './Client'
 import GameContainer from './Game';
 import UserInfo from './UserInfo';
+import ScoreList from './ScoreList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Main extends Component {
@@ -43,27 +44,8 @@ class Main extends Component {
             user_id={this.state.user_id}
           />
         </div>
-        <div className="col-sm-3 bg-success rounded-35px">
-          <div className="alert alert-info M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-           <div className="alert alert-success M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-           <div className="alert alert-warning M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-           <div className="alert alert-danger M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-           <div className="alert alert-success M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-           <div className="alert alert-success M-3px">
-            <strong>Success!</strong> Indicates a successful or positive action.
-          </div>
-        </div>
-      </div> 
+        <ScoreList />
+      </div>
     );
   }
 

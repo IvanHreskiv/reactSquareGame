@@ -101,6 +101,17 @@ class Client {
       .then(this.parseJson)
   }
 
+  getScores() {
+    return fetch( SERVER_HOST + '/api/user_scores/', {
+      method: 'GET',
+      headers: new Headers({
+        'content-type': 'application/json',
+        'Authorization': 'JWT ' + this.token,
+      }),
+    }).then(this.checkStatus)
+      .then(this.parseJson)
+  }
+
   create_user(data) {
     return fetch( SERVER_HOST + '/api/users', {
       method: 'POST',

@@ -168,12 +168,16 @@ app.get('/api/scores/:id', loginRequired,(req, res) => {
     }).catch(err => res.json({err}));
 });
 
-//var new_d1 = Object.keys(dict).map(function(key) {return dict[key];});
-// A fake API token we validate against
 app.post('/api/scores', loginRequired, (req, res) => {
   Score.create(req.body)
   .then((score) => { res.status(201).json({success: true, user: score,}); })
   .catch(err => res.json({err}));
+});
+
+app.get('/api/scores', loginRequired, (req, res) => {
+  Score.findAll()
+    .then((scores) => { res.json({success: true, scores: scores,}); })
+    .catch(err => res.json({err}));
 });
 
 app.patch('/api/scores/:id', loginRequired, (req, res) => {
@@ -192,6 +196,18 @@ app.delete('/api/scores/:id', loginRequired, (req, res) => {
     .then(score => score.destroy())
     .then(() => {res.status(204).json({});})
     .catch(err => res.status(404).json({err}));
+});
+
+app.get('/api/user_scores', loginRequired, (req, res) => {
+  User.findAll({
+    attributes: [
+      'username',
+      [sequelize.literal('SUM(scores.score)'), 'scoreTotal'],
+    ],
+    include: [{model: models.Score, as: 'Scores'}]
+  })
+  .then((scores) => { res.json({...scores}); })
+  .catch(err => console.log(err));
 });
 
 app.post('/api/login', (req, res) => {

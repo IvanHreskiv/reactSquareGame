@@ -33,4 +33,9 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User.hasMany(db.Score, {as: 'Scores', foreignKey: 'user_id', sourceKey: 'id'});
+db.Score.belongsTo(db.User, {foreignKey: 'user_id', targetKey: 'id'});
+db.User.sync();
+db.Score.sync();
+
 module.exports = db;
