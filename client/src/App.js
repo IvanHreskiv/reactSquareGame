@@ -38,11 +38,25 @@ const RouteWhenLoggedIn = ({ component: Component, ...rest }) => (
 );
 
 class Auth extends Component {
-
     constructor(props) {
       super(props);
 
+      this.state = {
+        success: false,
+        error: false
+      }
+    }
+
+    componentDidMount() {
       client.authenticate()
+      .then(res => this.setState({
+        success: true,
+        error: false
+      }))
+      .catch(res => this.setState({
+        success: true,
+        error: false
+      }));
     }
 
     render() {

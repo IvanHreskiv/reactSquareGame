@@ -125,7 +125,7 @@ class Client {
   }
 
   authenticate() {
-      return fetch( SERVER_HOST + '/auth', {
+      return fetch( SERVER_HOST + '/auth/facebook', {
           method: 'GET',
       }).then(this.checkStatus)
         .then(this.parseJson)
