@@ -1,15 +1,14 @@
 import express from 'express';
-import Promise from 'bluebird';
 import morgan from 'morgan';
 import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken';
-import simpleOauthModule from 'simple-oauth2';
-import http from 'http';
+import passport from 'passport';
+import pswdFacebook from 'passport-facebook'
 require('dotenv').config();
 const models = require('./models');
-
-console.log(process.env.CLIENT_ID);
+const Strategy = pswdFacebook.Strategy;
+const User = models.User;
 
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
@@ -30,16 +29,43 @@ sequelize
     console.log('Connection has been established successfully.');
   })
   .catch(err => {
-    console.error('Unable to connect to the database:', err); 
+    console.error('Unable to connect to the database:', err);
   });
 
+passport.use(new Strategy({
+    clientID: process.env.FB_CLIENT_ID,
+    clientSecret: process.env.FB_SECRET,
+    callbackURL: 'http://squaregame.com:3001/auth/facebook/return',
+    profileFields: ['id', 'email']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({
+      where: profile._json,
+      defaults: {
+        password: '12345678',
+        username: 'username1'}
+    })
+    .then((profile) => {return  cb(null, profile);})
+    .catch(err => console.log(err));
+  }));
 
-const app = express();
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
 
 
+var app = express();
 
-app.set('port', (process.env.API_PORT || 3001));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methos", "*");
@@ -59,9 +85,20 @@ app.use(function(req, res, next) {
   }
 });
 
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.set('port', (process.env.API_PORT || 3001));
+
 if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
 }
+
+
+console.log(process.env.CLIENT_ID);
+
 
 function loginRequired(req, res, next) {
   if (req.user) {
@@ -71,53 +108,31 @@ function loginRequired(req, res, next) {
   }  
 }
 
-const oauth2 = simpleOauthModule.create({
-    client: {
-        id: process.env.FB_CLIENT_ID,
-        secret: process.env.FB_SECRET,
-    },
-    auth: {
-        tokenHost: 'https://www.facebook.com',
-        tokenPath: 'https://graph.facebook.com/oauth/access_token',
-        authorizePath: '/v2.11/dialog/oauth',
-    },
-});
-
-const authorizationUri = oauth2.authorizationCode.authorizeURL({
-    redirect_uri: 'http://localhost:3001/callback',
-    scope: 'email',
-    state: '3(#0/!~'
-});
-
-app.get('/auth', (req, res) => {
-  res.redirect(authorizationUri);
-});
-
-app.get('/callback', (req, res) => {
-  const code = req.query.code;
-  const options = {
-    code: code,
-    redirect_uri: 'http://localhost:3001/callback'
-  };
-
-  oauth2.authorizationCode.getToken(options, (error, result) => {
-    if (error) {
-      console.error('Access Token Error', error.message);
-      return res.json('Authentication failed');
-    }
-
-    console.log('The resulting token: ', result);
-    const token = oauth2.accessToken.create(result);
-    const options = {
-      host: 'https://graph.facebook.com',
-      path: '/me'
-    };
-
-    return res.status(200).json(token);
+app.get('/home',
+  function(req, res) {
+    res.render('home', { user: req.user });
   });
-});
 
-const User = models.User;
+app.get('/auth',
+  function(req, res){
+    res.render('login');
+  });
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/return',
+  passport.authenticate('facebook', { failureRedirect: '/auth' }),
+  function(req, res) {
+    res.redirect('/home');
+  });
+
+app.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('profile', { user: req.user });
+  });
+
 app.get('/api/users/:id', loginRequired, (req, res) => {
   User.findById(req.params.id)
     .then(user => {
@@ -223,6 +238,9 @@ app.post('/api/login', (req, res) => {
       }
     }).catch(err => res.json({err}));
 });
+
+
+
 
 
 export default app;

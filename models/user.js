@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
-    indexes: [{unique: true, fields: ['email', 'username']}],
+    indexes: [{unique: true, fields: ['email']}],
     classMethods: {
       associate: function(models) {
         // associations can be defined here
@@ -46,9 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       return squelize.Promise.reject(err);
     })
   });
-
-
-  User.sync();
 
   return User;
 };
