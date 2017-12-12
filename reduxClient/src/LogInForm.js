@@ -1,10 +1,9 @@
 import React from 'react'
 import './LoginForm.css';
 import { Field, reduxForm } from 'redux-form'
-import { user as dispatchUser } from './reducers';
 
 const validate = values => {
-  const errors = {}
+  const errors = {};
   if (!values.username) {
     errors.username = 'Required'
   } else if (values.username.length > 15) {

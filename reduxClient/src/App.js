@@ -1,51 +1,74 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom'
 import { reducer as formReducer, Field, reduxForm } from 'redux-form';
 import { combineReducers, createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import LogInForm from './LogInForm';
 import './App.css';
-import { loginUser } from './reducers';
-import { logIn } from './actions';
+import UserInfo from './UserInfo';
+import { loginUser, user } from './reducers';
+import { logIn, userLoggedIn} from './actions';
 import { client } from './Client'
 
 const reducer = combineReducers({
+  user: user,
   jsonWebToken: loginUser,
   form: formReducer});
 
 let store = createStore(reducer, {});
 
-const userD = {username: 'username1'};
-store.dispatch(logIn(userD));
+const Container = ({handleSubmit}) => (
+  <div style={{ padding: 15 }}>
+    <Route exect path="/main" component={UserInfo} />
+    <Route
+      exect path="/login"
+      render={(props) => (
+        <LogInForm {...props} onSubmit={handleSubmit}/>
+      )
+      }
+    />
+  </div>
+);
 
-console.log(store.getState());
+Container.propTypes = {
+  handleSubmit: PropTypes.func.isRequired
+};
 
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    handleSubmit: (data) => {
+      client.login(JSON.stringify(data))
+        .then((json) => {
+          let jsonWebToken = json.token;
+          store.dispatch(logIn(ownProps.history, jsonWebToken));
+          return jsonWebToken;
+        })
+        .then((token) => store.dispatch(userLoggedIn(token)))
+        .catch(err => console.log(err));
+    }
+  }
+};
+
+const connectedContainer = withRouter(connect(mapStateToProps, mapDispatchToProps)(Container));
 
 class App extends Component {
-  handleSubmit = (data) => {
-    client.login(JSON.stringify(data))
-      .then((json) => {
-        let jsonWebToken = json.token;
-        store.dispatch(logIn(jsonWebToken));
-      })
-      .catch(err => console.log(err));
-
-  };
-
   render() {
     return (
       <Provider store={store}>
         <Router>
-          <div style={{ padding: 15 }}>
-            <Route path="/main" component={LogInForm} />
-            <LogInForm onSubmit={this.handleSubmit}/>
-          </div>
+          <Route exect path="/" component={connectedContainer} />
         </Router>
       </Provider>
     );
 
   }
 }
+
 
 export default App;
