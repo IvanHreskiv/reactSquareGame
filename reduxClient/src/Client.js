@@ -10,7 +10,6 @@ class Client {
 
     if (this.useLocalStorage) {
       this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
-      console.log(this.token);
 
       if (this.token) {
         this.isTokenValid().then((bool) => {
@@ -23,10 +22,9 @@ class Client {
   }
 
   isLoggedIn() {
-    return !!this.token;
+    return localStorage.getItem('jwt'); //LOCAL_STORAGE_KEY);
   }
-
-  setToken(token) {
+setToken(token) {
     this.token = token;
 
     if (this.useLocaltorage) {
@@ -52,7 +50,6 @@ class Client {
     } else {
       const error = new Error(`HTTP Error ${response.statusText}`);
       error.responcse = response;
-      console.log(error);
       throw error
     }
   }
@@ -98,7 +95,7 @@ class Client {
       method: 'GET',
       headers: new Headers({
         'content-type': 'application/json',
-        'Authorization': 'JWT ' + this.token,
+        'Authorization': 'JWT ' + localStorage.getItem('jwt'),
       }),
     }).then(this.checkStatus)
       .then(this.parseJson)
@@ -109,7 +106,7 @@ class Client {
       method: 'GET',
       headers: new Headers({
         'content-type': 'application/json',
-        'Authorization': 'JWT ' + this.token,
+        'Authorization': 'JWT ' + localStorage.getItem('jwt'),
       }),
     }).then(this.checkStatus)
       .then(this.parseJson)

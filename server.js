@@ -3,11 +3,8 @@ import morgan from 'morgan';
 import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken';
-import passport from 'passport';
-import pswdFacebook from 'passport-facebook'
 require('dotenv').config();
 const models = require('./models');
-const Strategy = pswdFacebook.Strategy;
 const User = models.User;
 
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -32,40 +29,12 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-passport.use(new Strategy({
-    clientID: process.env.FB_CLIENT_ID,
-    clientSecret: process.env.FB_SECRET,
-    callbackURL: 'http://squaregame.com:3001/auth/facebook/return',
-    profileFields: ['id', 'email']
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({
-      where: profile._json,
-      defaults: {
-        password: '12345678',
-        username: 'username1'}
-    })
-    .then((profile) => {return  cb(null, profile);})
-    .catch(err => console.log(err));
-  }));
-
-passport.serializeUser(function(user, cb) {
-  cb(null, user);
-});
-
-passport.deserializeUser(function(obj, cb) {
-  cb(null, obj);
-});
 
 
 var app = express();
 
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methos", "*");
@@ -85,10 +54,6 @@ app.use(function(req, res, next) {
   }
 });
 
-// Initialize Passport and restore authentication state, if any, from the
-// session.
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.set('port', (process.env.API_PORT || 3001));
 
@@ -96,8 +61,6 @@ if (process.env.NODE_ENV !== 'TEST') {
   app.use(morgan('combined'));
 }
 
-
-console.log(process.env.CLIENT_ID);
 
 
 function loginRequired(req, res, next) {
@@ -107,31 +70,6 @@ function loginRequired(req, res, next) {
     return res.status(401).json({ message: 'Unauthorized user!'}); 
   }  
 }
-
-app.get('/home',
-  function(req, res) {
-    res.render('home', { user: req.user });
-  });
-
-app.get('/auth',
-  function(req, res){
-    res.render('login');
-  });
-
-app.get('/auth/facebook',
-  passport.authenticate('facebook'));
-
-app.get('/auth/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/auth' }),
-  function(req, res) {
-    res.redirect('/home');
-  });
-
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function(req, res){
-    res.render('profile', { user: req.user });
-  });
 
 app.get('/api/users/:id', loginRequired, (req, res) => {
   User.findById(req.params.id)

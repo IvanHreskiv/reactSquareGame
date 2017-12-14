@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom'
-import { reducer as formReducer, Field, reduxForm } from 'redux-form';
-import { combineReducers, createStore } from 'redux';
+import { BrowserRouter as Router, Route, withRouter, Redirect } from 'react-router-dom'
+import thunkMiddleware from 'redux-thunk'
+import { reducer as formReducer } from 'redux-form';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import LogInForm from './LogInForm';
 import './App.css';
 import UserInfo from './UserInfo';
 import { loginUser, user } from './reducers';
-import { logIn, userLoggedIn} from './actions';
+import { logIn, fetchUserData } from './actions';
 import { client } from './Client'
+
 
 const reducer = combineReducers({
   user: user,
   jsonWebToken: loginUser,
   form: formReducer});
 
-let store = createStore(reducer, {});
+let store = createStore(
+  reducer,
+  applyMiddleware(
+    thunkMiddleware
+  ));
 
 const Container = ({handleSubmit}) => (
-  <div style={{ padding: 15 }}>
-    <Route exect path="/main" component={UserInfo} />
     <Route
       exect path="/login"
       render={(props) => (
@@ -29,7 +32,6 @@ const Container = ({handleSubmit}) => (
       )
       }
     />
-  </div>
 );
 
 Container.propTypes = {
@@ -49,7 +51,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           store.dispatch(logIn(ownProps.history, jsonWebToken));
           return jsonWebToken;
         })
-        .then((token) => store.dispatch(userLoggedIn(token)))
+        .then((token) => store.dispatch(fetchUserData(token)))
         .catch(err => console.log(err));
     }
   }
@@ -57,16 +59,34 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const connectedContainer = withRouter(connect(mapStateToProps, mapDispatchToProps)(Container));
 
+const RouteWhenLoggedIn1 = ({ component: Component, ...rest }) => {
+  const jwt = client.isLoggedIn();
+  if (jwt) {
+    store.dispatch(fetchUserData(jwt));
+    return (
+      <Route {...rest} render={(props) => (
+          <Component {...props} />)}/>
+      );
+  } else {
+    return (
+      <Redirect to='/login' />
+    );
+  }
+};
+
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <Router>
-          <Route exect path="/" component={connectedContainer} />
+          <div style={{ padding: 15 }}>
+            <Route exect path="/" component={connectedContainer} />
+            <RouteWhenLoggedIn1 exect path="/main" component={UserInfo} />
+          </div>
         </Router>
       </Provider>
     );
-
   }
 }
 

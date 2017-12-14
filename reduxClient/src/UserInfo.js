@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import avatar from './avatar.jpg';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
@@ -23,13 +23,12 @@ UserInfo.propTypes = {
 };
 
 const mapStateToProps = state => {
-  const user = state.user;
-  console.log(user);
+  const user = state.user.data;
   return {
-    username: user.username,
-    fName: user.fName,
-    lName: user.lName,
-    email: user.email
+    username: user.username || '',
+    fName: user.fName || '',
+    lName: user.lName || '',
+    email: user.email || ''
   };
 };
 

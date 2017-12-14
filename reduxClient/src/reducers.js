@@ -1,10 +1,9 @@
-import { LOGIN_USER, USER_LOGGED_IN } from './actions';
-import { client } from './Client'
+import * as actions from './actions';
 
 
 export function loginUser(state = {}, action) {
   switch (action.type) {
-    case LOGIN_USER:
+    case actions.LOGIN_USER:
       return Object.assign({}, state, {
         jsonWebToken: action.jsonWebToken
       });
@@ -13,35 +12,28 @@ export function loginUser(state = {}, action) {
   }
 }
 
-const decodeToken = (jwt) => {
-  const [headerB64, payloadB64] = jwt.split('.');
-  const headerStr = new Buffer(headerB64, 'base64').toString();
-  const payloadStr = new Buffer(payloadB64, 'base64').toString();
-  return {
-    header: JSON.parse(headerStr),
-    payload: JSON.parse(payloadStr)
-  };
-};
 
-export function user(state = {}, action) {
+export function user(state = {isFetching: false, data: {}, error: null}, action) {
   switch (action.type) {
-    case USER_LOGGED_IN:
-      const decoded = decodeToken(action.token);
-      //TODO: it does not works
-      client.getUser(decoded.payload.id)
-      .then((res) => {
-        return Object.assign({}, state, {
-          user: res.user
-        });
-      })
-      .catch(err => console.log(err))
-
-      return {
-        username: 'jdoe',
-        fName: 'John',
-        lName: 'Doe',
-        email: 'jdoe@gmail.com'
-      };
+    case actions.FETCH_USER_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true,
+        data: {},
+        error: null
+      });
+    case actions.FETCH_USER_SUCCESS:
+      console.log(action.response);
+      return Object.assign({}, state, {
+        isFetching: false,
+        data: action.data,
+        error: null
+      });
+    case actions.FETCH_USER_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        data: {},
+        error: action.error
+      });
     default:
       return state;
   }
