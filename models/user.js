@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
+    reset_password_token: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     indexes: [{unique: true, fields: ['email']}],

@@ -177,7 +177,21 @@ app.post('/api/login', (req, res) => {
     }).catch(err => res.json({err}));
 });
 
-
+app.post('/api/auth/forgot_password', (req, res) => {
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+  .then((user) => {
+    console.log(user);
+    res.json({
+      success: true,
+      user: user,
+    });
+  })
+  .catch(err => res.json({err}));
+});
 
 
 
