@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import crypto from 'crypto';
 import Sequelize from 'sequelize';
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken';
@@ -184,7 +185,14 @@ app.post('/api/auth/forgot_password', (req, res) => {
     }
   })
   .then((user) => {
-    console.log(user);
+    const token = crypto.randomBytes(64).toString('hex');
+    return user.update({
+      reset_password_token: token
+    })
+    .then(user => user)
+    .catch(err => console.log(err));
+  })
+  .then((user) => {
     res.json({
       success: true,
       user: user,
