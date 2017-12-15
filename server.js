@@ -2,8 +2,11 @@ import express from 'express';
 import morgan from 'morgan';
 import crypto from 'crypto';
 import Sequelize from 'sequelize';
+import path from 'path';
 import bodyParser from 'body-parser'
 import jwt from 'jsonwebtoken';
+import hbs from 'nodemailer-express-handlebars';
+import nodemailer from 'nodemailer';
 require('dotenv').config();
 const models = require('./models');
 const User = models.User;
@@ -177,6 +180,25 @@ app.post('/api/login', (req, res) => {
       }
     }).catch(err => res.json({err}));
 });
+
+const email = process.env.MAILER_EMAIL_ID || 'auth_email_address@gmail.com';
+const pass = process.env.MAILER_PASSWORD || 'auth_email_pass';
+
+const smtpTransport = nodemailer.createTransport({
+  service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+  auth: {
+    user: email,
+    pass: pass
+  }
+});
+
+const handlebarsOptions = {
+  viewEngine: 'handlebars',
+  viewPath: path.resolve('./templates/'),
+  extName: '.html'
+};
+
+smtpTransport.use('compile', hbs(handlebarsOptions));
 
 app.post('/api/auth/forgot_password', (req, res) => {
   User.findOne({
