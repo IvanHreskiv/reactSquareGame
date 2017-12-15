@@ -1,7 +1,8 @@
 /*
  * action type
  */
-import { client } from './Client'
+import { client } from './Client';
+import { decodeToken } from './helpers';
 
 
 export const LOGIN_USER = 'LOGIN_USER';
@@ -13,7 +14,7 @@ export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
  * action creators
  */
 
-export function logIn(history, token) {
+export function logInUserAction(history, token) {
   localStorage.setItem('jwt', token);
   history.push('/main');
 
@@ -23,46 +24,35 @@ export function logIn(history, token) {
   }
 }
 
-
-const decodeToken = (jwt) => {
-  const [headerB64, payloadB64] = jwt.split('.');
-  const headerStr = new Buffer(headerB64, 'base64').toString();
-  const payloadStr = new Buffer(payloadB64, 'base64').toString();
-  return {
-    header: JSON.parse(headerStr),
-    payload: JSON.parse(payloadStr)
-  };
-};
-
-export function fetchUserRequest() {
+export function fetchUserRequestAction() {
   return {
     type: FETCH_USER_REQUEST,
   }
 }
 
-export function fetchUserFailure(error) {
+export function fetchUserFailureAction(error) {
   return {
     type: FETCH_USER_FAILURE,
     error: error
   }
 }
 
-export function fetchUserSuccess(json) {
+export function fetchUserSuccessAction(json) {
   return {
     type: FETCH_USER_SUCCESS,
     data: json.user
   }
 }
 
-export function fetchUserData(token) {
+export function fetchUserDataAction(token) {
   const decoded = decodeToken(token);
 
   return function (dispatch) {
-    dispatch(fetchUserRequest());
+    dispatch(fetchUserRequestAction());
 
     return client.getUser(decoded.payload.id)
-      .then(json => dispatch(fetchUserSuccess(json)))
-      .catch(error => dispatch(fetchUserFailure(error)))
+      .then(json => dispatch(fetchUserSuccessAction(json)))
+      .catch(error => dispatch(fetchUserFailureAction(error)))
   }
 
 }

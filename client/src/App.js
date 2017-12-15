@@ -4,18 +4,17 @@ import thunkMiddleware from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
-import PropTypes from 'prop-types'
-import LogInForm from './LogInForm';
 import './App.css';
 import UserInfo from './UserInfo';
-import { loginUser, user } from './reducers';
-import { logIn, fetchUserData } from './actions';
+import { loginUserReducer, userReducer } from './reducers';
+import { fetchUserDataAction } from './actions';
+import { connectedContainer } from './Container';
 import { client } from './Client'
 
 
 const reducer = combineReducers({
-  user: user,
-  jsonWebToken: loginUser,
+  user: userReducer,
+  jsonWebToken: loginUserReducer,
   form: formReducer});
 
 let store = createStore(
@@ -24,45 +23,10 @@ let store = createStore(
     thunkMiddleware
   ));
 
-const Container = ({handleSubmit}) => (
-    <Route
-      exect path="/login"
-      render={(props) => (
-        <LogInForm {...props} onSubmit={handleSubmit}/>
-      )
-      }
-    />
-);
-
-Container.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
-};
-
-const mapStateToProps = state => {
-  return {};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    handleSubmit: (data) => {
-      client.login(JSON.stringify(data))
-        .then((json) => {
-          let jsonWebToken = json.token;
-          store.dispatch(logIn(ownProps.history, jsonWebToken));
-          return jsonWebToken;
-        })
-        .then((token) => store.dispatch(fetchUserData(token)))
-        .catch(err => console.log(err));
-    }
-  }
-};
-
-const connectedContainer = withRouter(connect(mapStateToProps, mapDispatchToProps)(Container));
-
-const RouteWhenLoggedIn1 = ({ component: Component, ...rest }) => {
+const RouteWhenLoggedIn = ({ component: Component, ...rest }) => {
   const jwt = client.isLoggedIn();
   if (jwt) {
-    store.dispatch(fetchUserData(jwt));
+    store.dispatch(fetchUserDataAction(jwt));
     return (
       <Route {...rest} render={(props) => (
           <Component {...props} />)}/>
@@ -82,7 +46,7 @@ class App extends Component {
         <Router>
           <div style={{ padding: 15 }}>
             <Route exect path="/" component={connectedContainer} />
-            <RouteWhenLoggedIn1 exect path="/main" component={UserInfo} />
+            <RouteWhenLoggedIn exect path="/main" component={UserInfo} />
           </div>
         </Router>
       </Provider>

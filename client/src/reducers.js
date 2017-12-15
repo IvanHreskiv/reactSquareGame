@@ -1,7 +1,7 @@
 import * as actions from './actions';
 
 
-export function loginUser(state = {}, action) {
+export function loginUserReducer(state = {}, action) {
   switch (action.type) {
     case actions.LOGIN_USER:
       return Object.assign({}, state, {
@@ -12,8 +12,7 @@ export function loginUser(state = {}, action) {
   }
 }
 
-
-export function user(state = {isFetching: false, data: {}, error: null}, action) {
+export function userReducer(state = {isFetching: false, data: {}, error: null}, action) {
   switch (action.type) {
     case actions.FETCH_USER_REQUEST:
       return Object.assign({}, state, {
