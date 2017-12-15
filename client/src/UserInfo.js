@@ -1,47 +1,41 @@
-import React, { Component } from 'react';
+import React from 'react';
 import avatar from './avatar.jpg';
-import { Link } from 'react-router-dom';
-import { client } from './Client'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import './UserInfo.css';
 import 'bootstrap-social';
 import 'font-awesome/css/font-awesome.min.css';
 
-class UserInfo extends Component {
-  constructor(props) {
-    super(props);
+const UserInfo = ({username, fName, lName, email}) => (
+  <div className="card">
+    <h1>{username}</h1>
+    <img src={avatar} alt="John" className="h-100%"/>
+    <p className="title">{fName + ' ' + lName }</p>
+    <p>{email}</p>
+  </div>
+);
 
-    this.state = {
-      username: 'jdoe',
-      fName: 'John',
-      lName: 'Doe',
-      email: 'jdoe@gmail.com'
-    };
-  }
+UserInfo.propTypes = {
+  username: PropTypes.string.isRequired,
+  fName: PropTypes.string.isRequired,
+  lName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired
+};
 
-  componentDidMount() {
-    client.getUser(this.props.user_id)
-    .then((res) => {
-      this.setState({
-        username: res.user.username,
-        fName: res.user.firstName,
-        lName: res.user.lastName,
-        email: res.user.email
-      });
-    });
-  }
+const mapStateToProps = state => {
+  const user = state.user.data;
+  return {
+    username: user.username || '',
+    fName: user.fName || '',
+    lName: user.lName || '',
+    email: user.email || ''
+  };
+};
 
-  render() {
-    return (
-      <div className="card">
-          <h1>{this.state.username}</h1>
-        <img src={avatar} alt="John" className="h-100%"/>
-          <p className="title">{this.state.fName + ' ' + this.state.lName }</p>
-          <p>{this.state.email}</p>
-        <Link to='/logout'><button type="button">Log Out</button></Link>
-      </div>
-    );
-  }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
+const VisibleUserInfo = connect(mapStateToProps, mapDispatchToProps)(UserInfo);
 
-export default UserInfo;
+export default VisibleUserInfo;

@@ -1,5 +1,4 @@
-.App, .App>div {
-  height: 100%;
+.App {
   text-align: center;
 }
 
@@ -21,27 +20,6 @@
 
 .App-intro {
   font-size: large;
-}
-
-.H-100, .H-100>div {
-  height: 100%;
-}
-
-.rounded-35px {
-  margin: 1px 1px 1px 1px;
-  padding: 3px 3px 3px 3px;
-  border: #cdcdcd medium solid;
-  border-radius: 35px;
-  -moz-border-radius: 35px;
-  -webkit-border-radius: 35px;
-}
-
-.M-3px {
-  margin: 3px 3px 3px 3px;
-}
-
-.M-30px {
-  margin: 30px 30px 30px 30px;
 }
 
 @keyframes App-logo-spin {

@@ -1,24 +1,18 @@
 {
-  "name": "reactSW",
+  "name": "reduxClient",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "1.0.17"
   },
   "dependencies": {
-    "babel-eslint": "latest",
     "bootstrap": "latest",
     "bootstrap-social": "^5.1.1",
-    "eslint": "latest",
-    "eslint-plugin-babel": "latest",
-    "eslint-plugin-react": "latest",
-    "isomorphic-fetch": "2.2.1",
-    "moment": "latest",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
-    "react-fontawesome": "^1.6.1",
-    "react-router-dom": "latest",
-    "validator": "latest"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "redux-form": "^7.2.0",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
