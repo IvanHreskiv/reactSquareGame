@@ -193,9 +193,23 @@ app.post('/api/auth/forgot_password', (req, res) => {
     .catch(err => console.log(err));
   })
   .then((user) => {
-    res.json({
-      success: true,
-      user: user,
+    const data = {
+      to: user.email,
+      from: email,
+      template: 'reset-password-email',
+      subject: 'Password Reset Confirmation',
+      context: {
+        url: 'http://localhost:3001/auth/reset_password?token=' + user.reset_password_token,
+        name: user.username
+      }
+    };
+
+    smtpTransport.sendMail(data, function(err) {
+      if (!err) {
+        res.json({ message: 'Kindly check your email for further instructions' });
+      } else {
+        throw err
+      }
     });
   })
   .catch(err => res.json({err}));
