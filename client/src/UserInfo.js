@@ -1,5 +1,6 @@
 import React from 'react';
 import avatar from './avatar.jpg';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import './UserInfo.css';
@@ -12,6 +13,7 @@ const UserInfo = ({username, fName, lName, email}) => (
     <img src={avatar} alt="John" className="h-100%"/>
     <p className="title">{fName + ' ' + lName }</p>
     <p>{email}</p>
+    <Link to='/logout'><button type="button">Log Out</button></Link>
   </div>
 );
 

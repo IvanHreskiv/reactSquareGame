@@ -6,6 +6,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import './App.css';
 import UserInfo from './UserInfo';
+import LogOut from './Logout';
 import { loginUserReducer, userReducer } from './reducers';
 import { fetchUserDataAction } from './actions';
 import { connectedContainer } from './Container';
@@ -46,6 +47,7 @@ class App extends Component {
         <Router>
           <div style={{ padding: 15 }}>
             <Route exect path="/" component={connectedContainer} />
+            <Route exect path="/logout" component={LogOut} />
             <RouteWhenLoggedIn exect path="/main" component={UserInfo} />
           </div>
         </Router>

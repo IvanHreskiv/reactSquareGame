@@ -1,6 +1,9 @@
 import React from 'react'
 import './LoginForm.css';
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom';
+import 'bootstrap-social';
+import 'font-awesome/css/font-awesome.min.css';
 
 const validate = values => {
   const errors = {};
@@ -70,6 +73,11 @@ const LogInForm = props => {
             </button>
           </div>
         </form>
+        <Link to='/auth'>
+          <div className="btn btn-block btn-social btn-facebook">
+            <span className="fa fa-facebook"></span> Sign in with Facebook
+          </div>
+        </Link>
       </div>
     </div>
   )
