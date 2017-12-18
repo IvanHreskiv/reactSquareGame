@@ -181,16 +181,22 @@ app.post('/api/login', (req, res) => {
     }).catch(err => res.json({err}));
 });
 
-const email = process.env.MAILER_EMAIL_ID || 'auth_email_address@gmail.com';
-const pass = process.env.MAILER_PASSWORD || 'auth_email_pass';
+const email = process.env.MAILER_EMAIL_ID || '';
+const pass = process.env.MAILER_PASSWORD || '';
 
-const smtpTransport = nodemailer.createTransport({
-  service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+
+let smtpConfig = {
+  host: '127.0.0.1',
+  port: 1025,
+  secure: false, // upgrade later with STARTTLS
   auth: {
-    user: email,
-    pass: pass
+    user: 'user',
+    pass: 'password'
   }
-});
+};
+
+const smtpTransport = nodemailer.createTransport(smtpConfig);
+console.log('Helllog')
 
 const handlebarsOptions = {
   viewEngine: 'handlebars',
@@ -218,10 +224,10 @@ app.post('/api/auth/forgot_password', (req, res) => {
     const data = {
       to: user.email,
       from: email,
-      template: 'reset-password-email',
-      subject: 'Password Reset Confirmation',
+      template: 'forgot-password-email',
+      subject: 'Password help has arrived!',
       context: {
-        url: 'http://localhost:3001/auth/reset_password?token=' + user.reset_password_token,
+        url: 'http://localhost:3001/auth/reset_password/' + user.reset_password_token,
         name: user.username
       }
     };
@@ -229,6 +235,42 @@ app.post('/api/auth/forgot_password', (req, res) => {
     smtpTransport.sendMail(data, function(err) {
       if (!err) {
         res.json({ message: 'Kindly check your email for further instructions' });
+      } else {
+        throw err
+      }
+    });
+  })
+  .catch(err => res.json({err}));
+});
+
+app.post('/api/auth/reset_password/:token', (req, res) => {
+  User.findOne({
+    where: {
+      reset_password_token: req.params.token
+    }
+  })
+  .then((user) => {
+    return user.update({
+      reset_password_token: undefined,
+      password: req.body.password
+    })
+      .then(user => user)
+      .catch(err => console.log(err));
+  })
+  .then((user) => {
+    const data = {
+      to: user.email,
+      from: email,
+      template: 'reset-password-email',
+      subject: 'Password Reset Confirmation',
+      context: {
+        name: user.username
+      }
+    };
+
+    smtpTransport.sendMail(data, function(err) {
+      if (!err) {
+        res.json({ message: 'Password reset' });
       } else {
         throw err
       }

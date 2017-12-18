@@ -12,3 +12,8 @@ curl -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImR
 
 
 curl 'http://squaregame.com:3001/api/login' -H 'Host: squaregame.com:3001' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: http://localhost:3000/' -H 'content-type: application/json' -H 'origin: http://localhost:3000' -H 'Connection: keep-alive' --data '{"username":"username1","password":"12345678"}'
+
+
+curl -d '{ "password": "newpassword" }'  -H 'content-type: application/json' -X POST 'http://localhost:3001/api/auth/reset_password/7307b501aa9d9d6a9c6e61b66d1afdf05ba5a8cc127c94c32827f631ead5e19b5d571feb834581c01c1d431a4ab2c0db2c68e9c35f5f06c4d3b086ca9b176536' | jq .
+
+curl -d '{ "email": "demo@demo.com" }' -H 'content-type: application/json' -X POST 'http://localhost:3001/api/auth/forgot_password' | jq .
