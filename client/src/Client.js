@@ -24,7 +24,8 @@ class Client {
   isLoggedIn() {
     return localStorage.getItem('jwt'); //LOCAL_STORAGE_KEY);
   }
-setToken(token) {
+
+  setToken(token) {
     this.token = token;
 
     if (this.useLocaltorage) {
