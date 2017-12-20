@@ -1,4 +1,4 @@
-import { client } from './Client';
+import { client } from '../Client';
 
 const LOCAL_STORAGE_KEY = 'sr-spotiafy-fake-auth';
 

@@ -21,7 +21,6 @@ export function userReducer(state = {isFetching: false, data: {}, error: null}, 
         error: null
       });
     case actions.FETCH_USER_SUCCESS:
-      console.log(action.response);
       return Object.assign({}, state, {
         isFetching: false,
         data: action.data,
