@@ -1,48 +1,26 @@
-import fetch from 'isomorphic-fetch'
-
 const LOCAL_STORAGE_KEY = 'sr-spotiafy-fake-auth';
 const SERVER_HOST = 'http://squaregame.com:3001';
 
 
 class Client {
   constructor() {
-    this.useLocalStorage = (typeof localStorage !== 'undefined');
-
-    if (this.useLocalStorage) {
-      this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
-
-      if (this.token) {
-        this.isTokenValid().then((bool) => {
-          if (!bool) {
-            this.token = null
-          }
-        })
-      }
-    }
+    this.token = localStorage.getItem(LOCAL_STORAGE_KEY);
   }
 
   isLoggedIn() {
-    return localStorage.getItem('jwt'); //LOCAL_STORAGE_KEY);
+    return this.token;
   }
 
   setToken(token) {
     this.token = token;
 
-    if (this.useLocaltorage) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, token)
-    }
+    localStorage.setItem(LOCAL_STORAGE_KEY, token)
   }
 
   removeToken() {
     this.token = null;
 
-    if (this.useLocalStorage) {
-      localStorage.removeItem(LOCAL_STORAGE_KEY)
-    }
-  }
-
-  isTokenValid() {
-    return true;
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
   }
 
   checkStatus(response) {

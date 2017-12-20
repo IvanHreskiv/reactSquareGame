@@ -1,30 +1,37 @@
 import { client } from './Client';
 
-//global.fetch = require('jest-fetch-mock');
+const LOCAL_STORAGE_KEY = 'sr-spotiafy-fake-auth';
 
-//jest.mock('../node_modules/node-fetch', () => {
-//  return require('jest-fetch-mock');
-//});
+describe('Login', () => {
+  it('login user', () => {
+    const user = {
+      username: 'username',
+      password: 'password'
+    };
 
+    const res = JSON.stringify({
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRl' +
+      'bW9AZGVtby5jb20iLCJmaXJzdE5hbWUiOiJKb2huMSIsImlkIjoxM' +
+      'SwiaWF0IjoxNTExNTI4NzgzfQ.K8IBX_1VYma-TDvyAD8l5qYGmhY17Wc4PTupUv0utrY'
+    });
 
+    fetch.mockResponse(res);
 
-describe('Get user', () => {
-  it('fetches user data', () => {
-    fetch.mockResponse(JSON.stringify({username: 'username'}));
-
-    client.getUser(1)
-      .then((user) => {
-        expect(user).toBe({username: 'username'});
+    return client.login(user)
+      .then((json) => {
+        expect(json.token).toBeDefined();
+        expect(typeof json.token).toBe('string');
+        expect(client.token).toBeDefined();
+        expect(typeof client.token).toBe('string');
+        expect(localStorage.setItem).toHaveBeenLastCalledWith(LOCAL_STORAGE_KEY, json.token);
       })
   })
 });
 
-
-describe('My test suite', () => {
-  it('`true` should be `true`', () => {
-    expect(true).toBe(true);
-  });
-  it('`false` should be `false`', () => {
-    expect(false).toBe(false);
-  });
+describe('Logout', () => {
+  it('logout user', () => {
+    client.logout();
+    expect(client.token).toBeNull();
+  })
 });
+
