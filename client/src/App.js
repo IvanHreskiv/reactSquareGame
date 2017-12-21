@@ -7,16 +7,19 @@ import { Provider, connect } from 'react-redux';
 import './App.css';
 import UserInfo from './UserInfo';
 import LogOut from './Logout';
-import { loginUserReducer, userReducer } from './reducers';
+import { loginUserReducer, userReducer, gameReducer } from './reducers';
 import { fetchUserDataAction } from './actions';
 import { connectedContainer } from './Container';
 import { client } from './Client'
+import VisibleMain from "./Main";
 
 
 const reducer = combineReducers({
   user: userReducer,
   jsonWebToken: loginUserReducer,
-  form: formReducer});
+  form: formReducer,
+  game: gameReducer
+});
 
 let store = createStore(
   reducer,
@@ -48,7 +51,7 @@ class App extends Component {
           <div style={{ padding: 15 }}>
             <Route exect path="/" component={connectedContainer} />
             <Route exect path="/logout" component={LogOut} />
-            <RouteWhenLoggedIn exect path="/main" component={UserInfo} />
+            <RouteWhenLoggedIn exect path="/main" component={VisibleMain} />
           </div>
         </Router>
       </Provider>

@@ -6,6 +6,7 @@ import { decodeToken } from './helpers';
 
 
 export const LOGIN_USER = 'LOGIN_USER';
+export const START_GAME = 'START_GAME';
 export const FETCH_USER_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
