@@ -57,3 +57,10 @@ export function fetchUserDataAction(token) {
   }
 
 }
+
+export function startGame(obstacles) {
+  return {
+    type: START_GAME,
+    obstacles
+  }
+}
