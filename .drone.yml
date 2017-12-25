@@ -5,3 +5,7 @@ pipeline:
       - npm i
       - npm test
       - npm start
+
+services:
+  postgres:
+    image: postgres
