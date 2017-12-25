@@ -2,9 +2,8 @@ pipeline:
   frontend:
     image: node
     commands:
-      - cd client
       - npm i
-      - npm test
+      - npm start
 
 services:
   postgres:
