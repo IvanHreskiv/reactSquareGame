@@ -3,11 +3,5 @@ pipeline:
     image: node
     commands:
       - npm i
+      - npm test
       - npm run server
-
-services:
-  postgres:
-    image: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=test
