@@ -3,7 +3,7 @@ pipeline:
     image: node
     commands:
       - npm i
-      - npm start
+      - npm run server
 
 services:
   postgres:
