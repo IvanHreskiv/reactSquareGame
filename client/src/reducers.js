@@ -38,6 +38,7 @@ export function userReducer(state = {isFetching: false, data: {}, error: null}, 
 }
 
 const initialState =  {
+  frameNo: 0,
   square: {
     x: 20,
     y: 20,
@@ -46,17 +47,47 @@ const initialState =  {
     fill:'red',
     shadowBlur: 5,
   },
-  obstacles: []
+  obstacles: [],
+  interval: null
 };
+
+function everyinterval(state, n) {
+  if ((state.frameNo / n) % 1 === 0) {return true;}
+  return false;
+}
 
 export function gameReducer(state = initialState, action) {
   switch (action.type) {
     case actions.START_GAME:
-      return Object.assign({}, state, {
-        obstacles: action.obstacles
+      let stateObstacles = state.obstacles.map( (obstacle) => {
+        obstacle.x -= 1;
+        return obstacle;
       });
-    default:
+      const frameNo = state.frameNo + 1;
+      //TODO Probably should be refactored
+      if (state.frameNo === 1 || everyinterval(state, 150)) {
+        return Object.assign({}, state, {
+          obstacles: [...stateObstacles, ...action.obstacles],
+          frameNo: frameNo
+        });
+      } else {
+        return Object.assign({}, state, {
+          obstacles: stateObstacles,
+          frameNo: frameNo
+        });
+      }
+    case actions.SET_GAME_INTERVAL:
+      return Object.assign({}, state, {
+        interval: action.interval
+      });
+    case actions.STOP_GAME:
+      clearInterval(state.interval);
+      return Object.assign({}, state, {
+        interval: null
+      });
 
+
+    default:
       return state;
   }
 }

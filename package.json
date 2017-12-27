@@ -52,7 +52,10 @@
     "test-watch": "cross-env NODE_ENV=TEST jest --watch"
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/client/"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/client/"
+    ]
   },
   "author": "Fullstack React",
   "devDependencies": {

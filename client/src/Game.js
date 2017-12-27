@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startGame } from "./actions";
-import { Stage, Layer, Rect, Text } from 'react-konva';
+import {setGameTimer, stopGame} from "./actions";
+import { Stage, Layer, Rect, Text, Circle } from 'react-konva';
 import './App.css';
 
 export const ColoredRect = (props) => (
@@ -16,44 +16,59 @@ export const ColoredRect = (props) => (
   />
 );
 
-const Game = ({handleOnClick, square, obstacles}) => (
-  <Stage width={460} height={270}>
-    <Layer>
-      <Text text="Try click on rect" />
-      <ColoredRect
-        x={square.x}
-        y={square.y}
-        width={square.width}
-        height={square.height}
-        fill={square.fill}
-        shadowBlur={square.shadowBlur}
-        onClick={handleOnClick}
-      />
-      {obstacles}
-    </Layer>
-  </Stage>
+export const ColoredCircle = (props) => (
+  <Circle
+    x={props.x}
+    y={props.y}
+    radius={props.radius}
+    fill={props.fill}
+    stroke={props.stroke}
+    strokeWidth={props.strokeWidth}
+    onClick={props.onClick}
+  />
 );
 
-const genColumnObstacle = () => {
-  let obstacles = [];
-  let x = 460;
-  let minHeight = 20;
-  let maxHeight = 200;
-  let height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-  let minGap = 50;
-  let maxGap = 200;
-  let gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-  const props1 = {
-    x: x, y: 0, width: 10, height: height, fill: 'red', shadowBlur: 5
-  };
-  const props2 = {
-    x: x, y: (height + gap), width: 10, height: (x - height), fill: 'red', shadowBlur: 5
-  };
-  obstacles.push(ColoredRect(props1));
-  obstacles.push(ColoredRect(props2));
+const Game = ({handleOnStartClick, handleOnStopClick, square, obstacles}) => (
+  <div>
+    <Stage width={460} height={270}>
+      <Layer>
+        <Text text="Try click on rect" />
+        <ColoredRect
+          x={square.x}
+          y={square.y}
+          width={square.width}
+          height={square.height}
+          fill={square.fill}
+          shadowBlur={square.shadowBlur}
+        />
+        {obstacles.map( obstacle => <ColoredRect {...obstacle}/> )}
+      </Layer>
+    </Stage>
+    <Stage width={460} height={270}>
+      <Layer>
+      <ColoredCircle
+        x={230}
+        y={50}
+        radius={40}
+        fill={'red'}
+        stroke={'black'}
+        strokeWidth={4}
+        onClick={handleOnStopClick}
+        />
+        <ColoredCircle
+          x={130}
+          y={50}
+          radius={40}
+          fill={'green'}
+          stroke={'black'}
+          strokeWidth={4}
+          onClick={handleOnStartClick}
+        />
+    </Layer>
+    </Stage>
+  </div>
+);
 
-  return obstacles
-};
 
 const mapStateToProps = state => {
   return {
@@ -62,10 +77,14 @@ const mapStateToProps = state => {
   };
 };
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleOnClick: () => {
-      dispatch(startGame(genColumnObstacle()));
+    handleOnStartClick: () => {
+      dispatch(setGameTimer());
+    },
+    handleOnStopClick: () => {
+      dispatch(stopGame())
     }
   };
 };
