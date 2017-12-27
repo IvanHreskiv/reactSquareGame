@@ -6,7 +6,9 @@ import { decodeToken } from './helpers';
 
 
 export const LOGIN_USER = 'LOGIN_USER';
-export const START_GAME = 'START_GAME';
+export const CRASHED = 'CRASHED';
+export const CHECK_IF_CRASHED = 'CHECK_IF_CRASHED';
+export const DRAW_GAME = 'DRAW_GAME';
 export const STOP_GAME = 'STOP_GAME';
 export const MOVE_UP = 'MOVE_UP';
 export const MOVE_DOWN = 'MOVE_DOWN';
@@ -15,7 +17,7 @@ export const MOVE_LEFT = 'MOVE_LEFT';
 export const FETCH_USER_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
-export const SET_GAME_INTERVAL = 'SET_GAME_INTERVAL';
+export const SAVE_GAME_INTERVAL = 'SAVE_GAME_INTERVAL';
 
 /*
  * action creators
@@ -87,21 +89,36 @@ const genColumnObstacle = () => {
 
 export function saveGameInterval(interval) {
   return {
-    type: SET_GAME_INTERVAL,
+    type: SAVE_GAME_INTERVAL,
     interval
   }
 }
 
-export function setGameTimer() {
+export function startGame() {
   return function (dispatch) {
-    const interval = setInterval(() => dispatch(startGame(genColumnObstacle())), 20);
+    const interval = setInterval(() => dispatch(updateGame()), 20);
     dispatch(saveGameInterval(interval));
   }
 }
 
-export function startGame(obstacles) {
+export function checkIfCrashed() {
   return {
-    type: START_GAME,
+    type: CHECK_IF_CRASHED
+  }
+}
+
+export function updateGame() {
+  return function (dispatch) {
+    dispatch(checkIfCrashed());
+    dispatch(drawGame(genColumnObstacle()));
+  }
+
+
+}
+
+export function drawGame(obstacles) {
+  return {
+    type: DRAW_GAME,
     obstacles
   }
 }

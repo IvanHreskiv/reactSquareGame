@@ -86,8 +86,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleOnStartClick: () => {
-      console.log('Start');
-      dispatch(actions.setGameTimer());
+      dispatch(actions.startGame());
     },
     handleOnStopClick: () => {
       dispatch(actions.stopGame())

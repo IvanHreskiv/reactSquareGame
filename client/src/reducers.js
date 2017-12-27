@@ -78,14 +78,17 @@ function crashWith(obj, otherobj) {
 
 export function gameReducer(state = initialState, action) {
   switch (action.type) {
-    //TODO should be ranamed to draw
-    case actions.START_GAME:
+    case actions.CHECK_IF_CRASHED:
       let crashed = false;
       for (let i = 0; i < state.obstacles.length; i += 1) {
         if (crashWith(state.square, state.obstacles[i])) {
           crashed = true;
         }
       }
+      return Object.assign({}, state, {
+        crashed: crashed
+      });
+    case actions.DRAW_GAME:
       let stateObstacles = state.obstacles.map( (obstacle) => {
         obstacle.x -= 1;
         return obstacle;
@@ -96,16 +99,14 @@ export function gameReducer(state = initialState, action) {
         return Object.assign({}, state, {
           obstacles: [...stateObstacles, ...action.obstacles],
           frameNo: frameNo,
-          crashed: crashed
         });
       } else {
         return Object.assign({}, state, {
           obstacles: stateObstacles,
           frameNo: frameNo,
-          crashed: crashed
         });
       }
-    case actions.SET_GAME_INTERVAL:
+    case actions.SAVE_GAME_INTERVAL:
       return Object.assign({}, state, {
         interval: action.interval
       });
