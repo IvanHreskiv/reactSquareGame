@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './App.css';
 import UserInfo from './UserInfo';
 import VisibleGame from './Game';
+import VisibleControlPanel from './ControlPanel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Main = () => (
@@ -12,6 +13,7 @@ const Main = () => (
     </div>
     <div className="col-sm-4 bg-primary rounded-35px">
       <VisibleGame/>
+      <VisibleControlPanel />
     </div>
   </div>
 );

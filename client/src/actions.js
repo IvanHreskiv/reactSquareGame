@@ -8,6 +8,10 @@ import { decodeToken } from './helpers';
 export const LOGIN_USER = 'LOGIN_USER';
 export const START_GAME = 'START_GAME';
 export const STOP_GAME = 'STOP_GAME';
+export const MOVE_UP = 'MOVE_UP';
+export const MOVE_DOWN = 'MOVE_DOWN';
+export const MOVE_RIGHT = 'MOVE_RIGHT';
+export const MOVE_LEFT = 'MOVE_LEFT';
 export const FETCH_USER_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
@@ -105,5 +109,29 @@ export function startGame(obstacles) {
 export function stopGame() {
   return {
     type: STOP_GAME,
+  }
+}
+
+export function moveUP() {
+  return {
+    type: MOVE_UP
+  }
+}
+
+export function moveDown() {
+  return {
+    type: MOVE_DOWN
+  }
+}
+
+export function moveRight() {
+  return {
+    type: MOVE_RIGHT
+  }
+}
+
+export function moveLeft() {
+  return {
+    type: MOVE_LEFT
   }
 }
