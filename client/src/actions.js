@@ -14,6 +14,8 @@ export const MOVE_UP = 'MOVE_UP';
 export const MOVE_DOWN = 'MOVE_DOWN';
 export const MOVE_RIGHT = 'MOVE_RIGHT';
 export const MOVE_LEFT = 'MOVE_LEFT';
+export const INCREASE_FRAME_NO = 'INCREASE_FRAME_NO';
+export const MOVE_OBSTACLES_LEFT = 'MOVE_OBSTACLES_LEFT';
 export const FETCH_USER_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
@@ -110,10 +112,10 @@ export function checkIfCrashed() {
 export function updateGame() {
   return function (dispatch) {
     dispatch(checkIfCrashed());
+    dispatch(moveObstaclesLeft(1));
     dispatch(drawGame(genColumnObstacle()));
+    dispatch(increaseFrameNo(1));
   }
-
-
 }
 
 export function drawGame(obstacles) {
@@ -151,4 +153,18 @@ export function moveLeft() {
   return {
     type: MOVE_LEFT
   }
+}
+
+export function moveObstaclesLeft(step) {
+  return {
+    type: MOVE_OBSTACLES_LEFT,
+    step
+  }
+}
+
+export function increaseFrameNo(count) {
+  return {
+    type: INCREASE_FRAME_NO,
+    count
+  };
 }

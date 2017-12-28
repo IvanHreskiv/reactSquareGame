@@ -39,7 +39,7 @@ export function userReducer(state = {isFetching: false, data: {}, error: null}, 
 
 const initialState =  {
   crashed: false,
-  frameNo: 0,
+  frameNo: 1,
   square: {
     x: 20,
     y: 20,
@@ -88,23 +88,26 @@ export function gameReducer(state = initialState, action) {
       return Object.assign({}, state, {
         crashed: crashed
       });
-    case actions.DRAW_GAME:
-      let stateObstacles = state.obstacles.map( (obstacle) => {
-        obstacle.x -= 1;
+    case actions.MOVE_OBSTACLES_LEFT:
+      let obstacles = state.obstacles.map( (obstacle) => {
+        obstacle.x -= action.step;
         return obstacle;
       });
-      const frameNo = state.frameNo + 1;
-      //TODO Probably should be refactored
+      return Object.assign({}, state, {
+        obstacles: obstacles
+      });
+    case actions.INCREASE_FRAME_NO:
+      const frameNo = state.frameNo + action.count;
+      return Object.assign({}, state, {
+        frameNo: frameNo
+      });
+    case actions.DRAW_GAME:
       if (state.frameNo === 1 || everyinterval(state, 150)) {
         return Object.assign({}, state, {
-          obstacles: [...stateObstacles, ...action.obstacles],
-          frameNo: frameNo,
+          obstacles: [...state.obstacles, ...action.obstacles],
         });
       } else {
-        return Object.assign({}, state, {
-          obstacles: stateObstacles,
-          frameNo: frameNo,
-        });
+        return state;
       }
     case actions.SAVE_GAME_INTERVAL:
       return Object.assign({}, state, {
@@ -139,8 +142,6 @@ export function gameReducer(state = initialState, action) {
           x: state.square.x - 1
         })
       });
-
-
     default:
       return state;
   }
