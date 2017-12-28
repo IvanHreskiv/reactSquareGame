@@ -3,6 +3,7 @@
  */
 import { client } from './Client';
 import { decodeToken } from './helpers';
+import v1 from 'uuid';
 
 
 export const LOGIN_USER = 'LOGIN_USER';
@@ -79,10 +80,10 @@ const genColumnObstacle = () => {
   let maxGap = 200;
   let gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
   const props1 = {
-    x: x, y: 0, width: 10, height: height, fill: 'red', shadowBlur: 5
+    x: x, y: 0, width: 10, height: height, fill: 'red', shadowBlur: 5, key: v1()
   };
   const props2 = {
-    x: x, y: (height + gap), width: 10, height: (x - height), fill: 'red', shadowBlur: 5
+    x: x, y: (height + gap), width: 10, height: (x - height), fill: 'red', shadowBlur: 5, key: v1()
   };
   obstacles.push(props1);
   obstacles.push(props2);

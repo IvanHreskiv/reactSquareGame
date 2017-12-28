@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, withRouter, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import thunkMiddleware from 'redux-thunk'
 import { reducer as formReducer } from 'redux-form';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import './App.css';
-import UserInfo from './UserInfo';
 import LogOut from './Logout';
 import { loginUserReducer, userReducer, gameReducer } from './reducers';
 import { fetchUserDataAction } from './actions';

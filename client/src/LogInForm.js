@@ -20,11 +20,10 @@ const validate = values => {
 };
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+//TODO: dhould be implemented BE
 const asyncValidate = (values) => {
-  return sleep(1000).then(() => {
-    if (['john', 'paul', 'george', 'ringo'].includes(values.username)) {
-      throw { username: 'That username is taken' }
-    }
+  return sleep(1).then(() => {
+    return
   });
 };
 
@@ -86,6 +85,6 @@ const LogInForm = props => {
 export default reduxForm({
   form: 'logInForm', // a unique identifier for this form
   validate, // <--- validation function given to redux-form
-  //asyncValidate,
-  //asyncBlurFields: ['username']
+  asyncValidate,
+  asyncBlurFields: ['username']
 })(LogInForm)
