@@ -68,6 +68,7 @@ export function fetchUserDataAction(token) {
 
     return client.getUser(decoded.payload.id)
       .then(json => dispatch(fetchUserSuccessAction(json)))
+      .then(() => dispatch(fetchScoresDataAction()))
       .catch(error => dispatch(fetchUserFailureAction(error)))
   }
 
@@ -197,13 +198,12 @@ export function fetchScoresFailureAction(error) {
 export function fetchScoresSuccessAction(json) {
   return {
     type: FETCH_SCORES_SUCCESS,
-    data: json.scores
+    scores: json
   }
 }
 
 export function fetchScoresDataAction() {
   return function (dispatch) {
-    console.log('Hi')
     dispatch(fetchScoresRequestAction());
 
     return client.getScores()

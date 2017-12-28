@@ -19,7 +19,7 @@ const ScoreList = ({isFetching, scores, error}) => {
 
 const ScoreItem = (props) => (
   <div className="alert alert-success M-3px">
-    <strong>{props.username}</strong>{props.score}
+    <strong>{props.username}</strong>{props.scoreTotal}
   </div>
 );
 

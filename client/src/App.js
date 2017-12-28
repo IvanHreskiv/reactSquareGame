@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import './App.css';
 import LogOut from './Logout';
 import { loginUserReducer, userReducer, gameReducer, scoreListReducer } from './reducers';
-import { fetchUserDataAction, fetchScoresDataAction } from './actions';
+import { fetchUserDataAction } from './actions';
 import { connectedContainer } from './Container';
 import { client } from './Client'
 import VisibleMain from "./Main";
