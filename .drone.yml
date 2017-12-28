@@ -2,7 +2,7 @@ pipeline:
   frontend:
     image: node
     ports:
-      - 127.0.0.1:3001:3001
+      - 0.0.0.0:3001:3001
     commands:
       - npm i
       - npm test
