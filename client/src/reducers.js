@@ -155,3 +155,28 @@ export function gameReducer(state = initialState, action) {
       return state;
   }
 }
+
+export function scoreListReducer(state = {isFetching: false, scores: [], error: null}, action) {
+  switch (action.type) {
+    case actions.FETCH_SCORES_REQUEST:
+      return Object.assign({}, state, {
+        isFetching: true,
+        scores: [],
+        error: null
+      });
+    case actions.FETCH_SCORES_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        data: action.data,
+        error: null
+      });
+    case actions.FETCH_SCORES_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        scores: [],
+        error: action.error
+      });
+    default:
+      return state;
+  }
+}

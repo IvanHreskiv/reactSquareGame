@@ -21,6 +21,9 @@ export const MOVE_OBSTACLES_LEFT = 'MOVE_OBSTACLES_LEFT';
 export const FETCH_USER_REQUEST = 'FETCH_POSTS_REQUEST';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
+export const FETCH_SCORES_REQUEST = 'FETCH_SCORES_REQUEST';
+export const FETCH_SCORES_SUCCESS = 'FETCH_SCORES_SUCCESS';
+export const FETCH_SCORES_FAILURE = 'FETCH_SCORES_FAILURE';
 export const SAVE_GAME_INTERVAL = 'SAVE_GAME_INTERVAL';
 
 /*
@@ -176,4 +179,36 @@ export function increaseFrameNo(count) {
     type: INCREASE_FRAME_NO,
     count
   };
+}
+
+export function fetchScoresRequestAction() {
+  return {
+    type: FETCH_SCORES_REQUEST,
+  }
+}
+
+export function fetchScoresFailureAction(error) {
+  return {
+    type: FETCH_SCORES_FAILURE,
+    error: error
+  }
+}
+
+export function fetchScoresSuccessAction(json) {
+  return {
+    type: FETCH_SCORES_SUCCESS,
+    data: json.scores
+  }
+}
+
+export function fetchScoresDataAction() {
+  return function (dispatch) {
+    console.log('Hi')
+    dispatch(fetchScoresRequestAction());
+
+    return client.getScores()
+      .then(json => dispatch(fetchScoresSuccessAction(json)))
+      .catch(error => dispatch(fetchScoresFailureAction(error)))
+  }
+
 }
