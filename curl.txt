@@ -17,3 +17,6 @@ curl 'http://squaregame.com:3001/api/login' -H 'Host: squaregame.com:3001' -H 'U
 curl -d '{ "password": "newpassword" }'  -H 'content-type: application/json' -X POST 'http://localhost:3001/api/auth/reset_password/7307b501aa9d9d6a9c6e61b66d1afdf05ba5a8cc127c94c32827f631ead5e19b5d571feb834581c01c1d431a4ab2c0db2c68e9c35f5f06c4d3b086ca9b176536' | jq .
 
 curl -d '{ "email": "demo@demo.com" }' -H 'content-type: application/json' -X POST 'http://localhost:3001/api/auth/forgot_password' | jq .
+
+
+curl -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTExMTExMSwiaWF0IjoxNTE0NDc4Njc5LCJleHAiOjE1MTQ0ODIyNzl9.X5Rdd9metp2vedr0mDzZmUxlxlf2LLWFWhU874tixAc"  'http://localhost:3001/api/user_scores' | jq
