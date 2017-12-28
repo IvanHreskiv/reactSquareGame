@@ -10,6 +10,7 @@ export const CRASHED = 'CRASHED';
 export const CHECK_IF_CRASHED = 'CHECK_IF_CRASHED';
 export const DRAW_GAME = 'DRAW_GAME';
 export const STOP_GAME = 'STOP_GAME';
+export const STOP_GAME_IF_CRASHED = 'STOP_GAME_IF_CRASHED';
 export const MOVE_UP = 'MOVE_UP';
 export const MOVE_DOWN = 'MOVE_DOWN';
 export const MOVE_RIGHT = 'MOVE_RIGHT';
@@ -109,9 +110,16 @@ export function checkIfCrashed() {
   }
 }
 
+export function stopIfCrashed() {
+  return {
+    type: STOP_GAME_IF_CRASHED
+  };
+}
+
 export function updateGame() {
   return function (dispatch) {
     dispatch(checkIfCrashed());
+    dispatch(stopIfCrashed());
     dispatch(moveObstaclesLeft(1));
     dispatch(drawGame(genColumnObstacle()));
     dispatch(increaseFrameNo(1));

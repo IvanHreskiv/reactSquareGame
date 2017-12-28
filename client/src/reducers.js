@@ -88,6 +88,15 @@ export function gameReducer(state = initialState, action) {
       return Object.assign({}, state, {
         crashed: crashed
       });
+    case actions.STOP_GAME_IF_CRASHED:
+      if (state.crashed) {
+        clearInterval(state.interval);
+        return Object.assign({}, state, {
+          interval: null
+        });
+      } else {
+        return state;
+      }
     case actions.MOVE_OBSTACLES_LEFT:
       let obstacles = state.obstacles.map( (obstacle) => {
         obstacle.x -= action.step;
