@@ -89,6 +89,17 @@ class Client {
       }),
     }).then(this.checkStatus)
       .then(this.parseJson)
+      .then((json) => {
+        return Object.keys(json).map((key) => {
+          let sum = 0;
+          json[key].Scores.forEach((item) => {
+            sum += item.score;
+          });
+          return Object.assign({}, json[key], {
+            total: sum
+          })
+        });
+      })
   }
 
   create_user(data) {

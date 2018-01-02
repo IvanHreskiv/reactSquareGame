@@ -173,7 +173,7 @@ export function scoreListReducer(state = {isFetching: false, scores: [], error: 
     case actions.FETCH_SCORES_SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
-        scores: [...state.scores, action.scores],
+        scores: action.scores,
         error: null
       });
     case actions.FETCH_SCORES_FAILURE:

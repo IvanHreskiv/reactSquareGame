@@ -159,7 +159,6 @@ app.get('/api/user_scores', loginRequired, (req, res) => {
   User.findAll({
     attributes: [
       'username',
-      [sequelize.literal('SUM(scores.score)'), 'scoreTotal'],
     ],
     include: [{model: models.Score, as: 'Scores'}]
   })
