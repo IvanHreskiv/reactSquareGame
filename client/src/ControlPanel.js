@@ -20,7 +20,7 @@ const ControlPanel = (props) => (
   <Stage width={460} height={270}>
     <Layer>
       <ColoredCircle
-        x={230}
+        x={160}
         y={50}
         radius={40}
         fill={'red'}
@@ -29,13 +29,31 @@ const ControlPanel = (props) => (
         onClick={props.handleOnStopClick}
       />
       <ColoredCircle
-        x={130}
+        x={60}
         y={50}
         radius={40}
         fill={'green'}
         stroke={'black'}
         strokeWidth={4}
         onClick={props.handleOnStartClick}
+      />
+      <ColoredCircle
+        x={260}
+        y={50}
+        radius={40}
+        fill={'yellow'}
+        stroke={'black'}
+        strokeWidth={4}
+        onClick={props.handleOnResetClick}
+      />
+      <ColoredCircle
+        x={360}
+        y={50}
+        radius={40}
+        fill={'blue'}
+        stroke={'black'}
+        strokeWidth={4}
+        onClick={props.handleOnSaveClick}
       />
       <ColoredCircle
         x={230}
@@ -102,6 +120,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     handleOnRightClick: () => {
       dispatch(actions.moveRight())
+    },
+    handleOnResetClick: () => {
+      dispatch(actions.resetGame())
+    },
+    handleOnSaveClick: () => {
+      dispatch(actions.saveScoreRequestAction())
     }
   };
 };

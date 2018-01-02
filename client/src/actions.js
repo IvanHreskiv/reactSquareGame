@@ -11,6 +11,7 @@ export const CRASHED = 'CRASHED';
 export const CHECK_IF_CRASHED = 'CHECK_IF_CRASHED';
 export const DRAW_GAME = 'DRAW_GAME';
 export const STOP_GAME = 'STOP_GAME';
+export const RESET_GAME = 'RESET_GAME';
 export const STOP_GAME_IF_CRASHED = 'STOP_GAME_IF_CRASHED';
 export const MOVE_UP = 'MOVE_UP';
 export const MOVE_DOWN = 'MOVE_DOWN';
@@ -25,6 +26,8 @@ export const FETCH_SCORES_REQUEST = 'FETCH_SCORES_REQUEST';
 export const FETCH_SCORES_SUCCESS = 'FETCH_SCORES_SUCCESS';
 export const FETCH_SCORES_FAILURE = 'FETCH_SCORES_FAILURE';
 export const SAVE_GAME_INTERVAL = 'SAVE_GAME_INTERVAL';
+export const SAVE_SCORE_REQUEST_FAILURE = 'SAVE_SCORE_REQUEST_FAILURE';
+export const SAVE_SCORE_REQUEST_SUCCESS = 'SAVE_SCORE_REQUEST_SUCCESS';
 
 /*
  * action creators
@@ -37,6 +40,28 @@ export function logInUserAction(history, token) {
   return {
     type: LOGIN_USER,
     jsonWebToken: token
+  }
+}
+
+export function saveScoreRequestFailureAction(error) {
+  return {
+    type: SAVE_SCORE_REQUEST_FAILURE,
+    error: error
+  }
+}
+
+export function saveScoreRequestSuccessAction() {
+  return {
+    type: SAVE_SCORE_REQUEST_SUCCESS,
+  }
+}
+
+export function saveScoreRequestAction() {
+  const score = 1;
+  return function (dispatch) {
+    return client.create_score(score)
+      .then(() => dispatch(saveScoreRequestSuccessAction()))
+      .catch(error => dispatch(saveScoreRequestFailureAction(error)))
   }
 }
 
@@ -141,6 +166,12 @@ export function drawGame(obstacles) {
 export function stopGame() {
   return {
     type: STOP_GAME,
+  }
+}
+
+export function resetGame() {
+  return {
+    type: RESET_GAME,
   }
 }
 

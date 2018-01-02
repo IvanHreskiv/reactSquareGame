@@ -40,11 +40,14 @@ export function userReducer(state = {isFetching: false, data: {}, error: null}, 
 const initialState =  {
   crashed: false,
   frameNo: 1,
+  isSaving: false,
+  error: null,
   square: {
     x: 20,
     y: 20,
     width: 50,
     height: 50,
+
     fill:'red',
     shadowBlur: 5,
   },
@@ -127,6 +130,9 @@ export function gameReducer(state = initialState, action) {
       return Object.assign({}, state, {
         interval: null
       });
+    case actions.RESET_GAME:
+      clearInterval(state.interval);
+      return initialState;
     case actions.MOVE_UP:
       return Object.assign({}, state, {
         square: Object.assign({}, state.square, {
@@ -174,6 +180,16 @@ export function scoreListReducer(state = {isFetching: false, scores: [], error: 
       return Object.assign({}, state, {
         isFetching: false,
         scores: [],
+        error: action.error
+      });
+    case actions.SAVE_SCORE_REQUEST_SUCCESS:
+      return Object.assign({}, state, {
+        isSaving: false,
+        error: null
+      });
+    case actions.FETCH_USER_FAILURE:
+      return Object.assign({}, state, {
+        isSaving: false,
         error: action.error
       });
     default:

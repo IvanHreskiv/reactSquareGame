@@ -5,6 +5,7 @@ import UserInfo from './UserInfo';
 import VisibleGame from './Game';
 import VisibleControlPanel from './ControlPanel';
 import VisibleScoreList from './ScoreList';
+import VisibleScore from './Score';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Main = () => (
@@ -15,6 +16,7 @@ const Main = () => (
     <div className="col-sm-4 bg-primary rounded-35px">
       <VisibleGame/>
       <VisibleControlPanel />
+      <VisibleScore />
     </div>
     <div className="col-sm-4 bg-info rounded-35px">
       <VisibleScoreList />
