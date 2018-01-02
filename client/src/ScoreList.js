@@ -10,17 +10,17 @@ const ScoreList = ({isFetching, scores, error}) => {
     );
   } else {
     return (
-      <div className="col-sm-3 bg-success rounded-35px">
-        {scores.map(score => <ScoreItem {...score}/>)}
-      </div>
+        <ul className="list-group">
+          {scores.map(score => <ScoreItem {...score}/>)}
+        </ul>
     );
   }
 };
 
 const ScoreItem = (props) => (
-  <div className="alert alert-success M-3px">
-    <strong>{props.username}</strong>{props.total}
-  </div>
+  <li className="list-group-item list-group-item-success">
+    <h1>{props.username} {props.total}</h1>
+  </li>
 );
 
 const mapStateToProps = (state) => {

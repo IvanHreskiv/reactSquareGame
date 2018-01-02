@@ -21,7 +21,6 @@ const Game = (props) => {
     return (
       <Stage width={460} height={270}>
         <Layer>
-          <Text text="Try click on rect"/>
           <ColoredRect
             x={props.square.x}
             y={props.square.y}
