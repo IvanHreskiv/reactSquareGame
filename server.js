@@ -126,7 +126,7 @@ app.get('/api/scores/:id', loginRequired,(req, res) => {
 });
 
 app.post('/api/scores', loginRequired, (req, res) => {
-  Score.create(req.body)
+  Score.create({score: req.body.score, user_id: req.user.id})
   .then((score) => { res.status(201).json({success: true, user: score,}); })
   .catch(err => res.json({err}));
 });

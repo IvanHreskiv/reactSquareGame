@@ -3,6 +3,7 @@
  */
 import { client } from './Client';
 import { decodeToken } from './helpers';
+import { store } from './App';
 import v1 from 'uuid';
 
 
@@ -57,9 +58,11 @@ export function saveScoreRequestSuccessAction() {
 }
 
 export function saveScoreRequestAction() {
-  const score = 1;
+  const data = {
+    score: store.getState().game.frameNo
+  };
   return function (dispatch) {
-    return client.create_score(score)
+    return client.create_score(JSON.stringify(data))
       .then(() => dispatch(saveScoreRequestSuccessAction()))
       .catch(error => dispatch(saveScoreRequestFailureAction(error)))
   }

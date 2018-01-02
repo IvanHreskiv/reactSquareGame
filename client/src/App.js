@@ -21,7 +21,7 @@ const reducer = combineReducers({
   scores: scoreListReducer
 });
 
-let store = createStore(
+export let store = createStore(
   reducer,
   applyMiddleware(
     thunkMiddleware
