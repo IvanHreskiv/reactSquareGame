@@ -6,7 +6,7 @@ pipeline:
       - npm test
 
   publish-api-docker:
-    image: plugins/docker
+    image: plugins/docker:1.12
     username: ${DOCKERHUB_USERNAME}
     password: ${DOCKERHUB_PASSWORD}
     email: ${DOCKERHUB_EMAIL}
