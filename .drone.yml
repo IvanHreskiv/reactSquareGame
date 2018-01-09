@@ -10,3 +10,5 @@ pipeline:
     repo: ihreskiv/squaregame
     tags: latest
     secrets: [dockerhub_username, dockerhub_password]
+    volumes:
+     - /var/run/dockerr.sock:/var/run/docker.sock
