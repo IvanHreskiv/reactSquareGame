@@ -6,7 +6,6 @@ pipeline:
       - npm test
 
   publish-api-docker:
-    registry: hub.docker.com
     image: plugins/docker
     repo: ihreskiv/squaregame
     tags: latest
