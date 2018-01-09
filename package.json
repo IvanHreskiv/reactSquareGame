@@ -46,6 +46,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
+    "eject": "concurrently \"npm run eject\" \"npm run eject\"",
     "server": "babel-node start-server.js",
     "client": "babel-node start-client.js",
     "test": "jest",

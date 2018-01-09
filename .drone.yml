@@ -1,9 +1,7 @@
 pipeline:
   frontend:
     image: node
-    ports:
-      - 0.0.0.0:3001:3001
     commands:
       - npm i
       - npm test
-      - npm run server
+      - npm eject
