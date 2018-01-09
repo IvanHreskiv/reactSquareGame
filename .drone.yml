@@ -6,7 +6,7 @@ pipeline:
       - npm test
 
   publish-api-docker:
-    image: plugins/docker:1.12
+    image: plugins/docker
     repo: ihreskiv/squaregame
     tags: latest
     secrets: [dockerhub_username, dockerhub_password]
