@@ -6,9 +6,8 @@ pipeline:
       - npm test
 
   publish-api-docker:
+    registry: docker.io
     image: plugins/docker
     repo: ihreskiv/squaregame
     tags: latest
     secrets: [dockerhub_username, dockerhub_password]
-    volumes:
-     - /var/run/dockerr.sock:/var/run/docker.sock
