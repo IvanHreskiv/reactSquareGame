@@ -1,3 +1,3 @@
 FROM node
-MAINTAINER Ivan Hreskiv
+MAINTAINER IvanHreskiv
 
