@@ -9,4 +9,5 @@ pipeline:
     image: plugins/docker
     repo: ihreskiv/squaregame
     tags: latest
+    debug: true
     secrets: [dockerhub_username, dockerhub_password]
