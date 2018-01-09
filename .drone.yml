@@ -4,3 +4,10 @@ pipeline:
     commands:
       - npm i
       - npm test
+
+  publish-api-docker:
+    image: plugins/docker
+    username: ${DOCKERHUB_USERNAME}
+    password: ${DOCKERHUB_PASSWORD}
+    repo: ihreskiv/squaregame
+    tags: latest
