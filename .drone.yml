@@ -4,4 +4,4 @@ pipeline:
     commands:
       - npm i
       - npm test
-      - npm eject-all
+      - npm run eject-all
