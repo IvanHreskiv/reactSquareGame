@@ -46,9 +46,10 @@
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "eject": "concurrently \"npm run eject\" \"npm run eject\"",
+    "eject-all": "concurrently \"npm run eject\" \"npm run eject\"",
     "server": "babel-node start-server.js",
     "client": "babel-node start-client.js",
+    "eject": "react-scripts eject",
     "test": "jest",
     "test-watch": "cross-env NODE_ENV=TEST jest --watch"
   },
