@@ -1,9 +1,9 @@
-FROM node:6.3.0
+FROM node
 MAINTAINER IvanHreskiv
 EXPOSE 8081
 COPY package.json /app/
 RUN cd /app && \
-    npm install
+    npm install --quiet
 COPY . /app
 WORKDIR /app
 
