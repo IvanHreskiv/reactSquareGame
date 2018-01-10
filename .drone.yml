@@ -11,3 +11,5 @@ pipeline:
     tags: latest
     debug: true
     secrets: [dockerhub_username, dockerhub_password]
+    dockerfile: ./Dockerfile
+    context: ./
