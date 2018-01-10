@@ -5,6 +5,7 @@
   "private": "true",
   "babel": {
     "presets": [
+      "env",
       "stage-0"
     ],
     "plugins": [

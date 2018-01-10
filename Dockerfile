@@ -3,7 +3,7 @@ MAINTAINER IvanHreskiv
 EXPOSE 8081
 COPY package.json /app/
 RUN cd /app && \
-    npm install --quiet --production
+    npm install
 COPY . /app
 WORKDIR /app
 
