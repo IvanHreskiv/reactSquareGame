@@ -46,9 +46,8 @@
     "urijs": "1.18.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "npm run server",
     "server": "babel-node start-server.js",
-    "client": "babel-node start-client.js",
     "test": "jest",
     "test-watch": "cross-env NODE_ENV=TEST jest --watch"
   },
